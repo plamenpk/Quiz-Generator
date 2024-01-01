@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/semi */
-/* eslint-disable semi */
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { logoutUser } from './../../services/auth.services';
@@ -15,8 +13,10 @@ const Sidebar: React.FC = () => {
           userData: undefined
         });
       })
-      .catch(console.error)
+      .catch(console.error);
   };
+
+
   return (
     <>
       <aside className="flex flex-col items-center pt-20 w-26 h-screen overflow-y-auto bg-white border-r rtl:border-l rtl:border-r-0 dark:bg-gray-900 dark:border-gray-700">
@@ -89,4 +89,4 @@ const Sidebar: React.FC = () => {
   );
 };
 
-export default Sidebar
+export default Sidebar;

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/semi */
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Login from '../../views/Login/Login';
@@ -15,7 +14,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/" element={<PublicView />} />
     </Routes>
-  )
-}
+  );
+};
 
-export default AppRoutes
+export default AppRoutes;

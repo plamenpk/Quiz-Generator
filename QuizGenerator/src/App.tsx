@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/semi */
 import React, { useState, useEffect } from 'react';
 import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar';
@@ -39,9 +38,9 @@ const App: React.FC = () => {
         userData: snapshot.val()[username] as UserData
       });
     })
-      .catch(e => console.error(e));
-  }, [user, appState]);
-
+      .catch(e => { console.error(e); });
+  }, [user]);
+  console.log(appState.user);
   return (
     <>
       <AuthContext.Provider value={{ appState, setUser: setAppState }}>
