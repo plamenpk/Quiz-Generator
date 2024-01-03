@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/semi */
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
@@ -15,7 +14,6 @@ const Register: React.FC = () => {
     password: '',
     role: 'student',
     phoneNumber: '',
-    profileImgUrl: '',
     address: ''
   });
 
@@ -65,12 +63,9 @@ const Register: React.FC = () => {
           form.lastName,
           form.role,
           form.phoneNumber,
-          form.profileImgUrl,
           form.address
         )
-          .catch(console.error)
-
-        // credential.user.value = form.username;
+          .catch(console.error);
         setUser({
           user: credential.user
         });
@@ -80,16 +75,14 @@ const Register: React.FC = () => {
         navigate('/home');
       })
       .catch((e) => { console.error(e.message); });
-    // }
-    // })
-    // .catch((e) => { console.error(e); });
   };
+
   return (
     <>
       {/* <!-- component --> */}
-      <div className="mt-10 p-6 bg-gray-100 flex items-center justify-center opacity-90">
+      <div className="mt-10 p-8 bg-gray-100 flex items-center justify-center opacity-90">
         <div className="container max-w-screen-lg mx-auto">
-          <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
+          <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8">
             <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
               <div className="text-gray-600">
                 <p className="font-medium text-lg">Personal Details</p>
@@ -190,6 +183,6 @@ const Register: React.FC = () => {
       </div>
     </>
   );
-}
+};
 
-export default Register
+export default Register;

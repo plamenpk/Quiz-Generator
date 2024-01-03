@@ -26,18 +26,18 @@ const Navbar: React.FC = () => {
     }
   };
 
-  const navigation = appState.userData ?
+  const navigation = appState?.userData ?
     [
       { name: 'Home', to: '/home', current: false },
     ]
     :
     [
-      { name: 'Log In', to: '/login', current: false },
+      { name: 'Log In', to: '/logIn', current: false },
       { name: 'Register', to: '/register', current: false },
     ];
-  // console.log(appState.userData, navigation);
+  
   return (
-    <Disclosure as="nav" className="bg-white border-b">
+    <Disclosure as="nav" className="fixed top-0 left-0 w-full z-50 bg-white border-b">
       {({ open }) => (
         <>
           <div className="mx-auto px-2 sm:px-6 lg:px-8">
@@ -69,7 +69,7 @@ const Navbar: React.FC = () => {
                         key={item.name}
                         to={item.to}
                         className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'text-black hover:bg-gray-400 hover:text-white',
+                          item.current ? 'bg-gray-900 text-white' : 'text-black hover:bg-gray-300 hover:text-white',
                           'px-3 py-2 font-medium'
                         )}
                         aria-current={item.current ? 'page' : undefined}
@@ -98,8 +98,8 @@ const Navbar: React.FC = () => {
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
+                        src={appState?.userData?.profileImgURL}
+                        alt={Logo}
                       />
                     </Menu.Button>
                   </div>
@@ -115,22 +115,12 @@ const Navbar: React.FC = () => {
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="#"
+                          <Link
+                            to="/profile"
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
-                            Your Profile
-                          </a>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                          >
-                            Settings
-                          </a>
+                            Profile
+                          </Link>
                         )}
                       </Menu.Item>
                       <Menu.Item>
@@ -140,7 +130,7 @@ const Navbar: React.FC = () => {
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                             onClick={onLogout}
                           >
-                            Sign out
+                            Log Out
                           </Link>
                         )}
                       </Menu.Item>

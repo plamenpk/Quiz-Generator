@@ -4,7 +4,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../../services/auth.services';
 
-const Login: React.FC = () => {
+const LogIn: React.FC = () => {
   const [form, setForm] = useState({
     email: '',
     password: ''
@@ -19,9 +19,9 @@ const Login: React.FC = () => {
       ...form,
       [field]: e.target.value
     });
-  }
+  };
 
-  const onLogin = (): void => {
+  const onLogIn = (): void => {
     if (form.email.length === 0) {
       alert('Email is required');
       return;
@@ -35,18 +35,18 @@ const Login: React.FC = () => {
       .then(credential => {
         setUser({
           user: credential.user
-        })
+        });
       })
       .then(() => {
         navigate('/home');
       })
-      .catch(console.error)
-  }
+      .catch(console.error);
+  };
 
   return (
-    <div className="mt-12 p-6 bg-gray-100 flex items-center justify-center opacity-90">
-      <div className="container max-w-screen-lg mx-auto">
-        <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-60">
+    <div className="mt-10 p-8 bg-gray-100 flex items-center justify-center opacity-90">
+      <div className="container max-w-screen-lg mx-auto mt-16 mb-60">
+        <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8 ">
           <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
             <div className="text-gray-600">
               <p className="font-medium text-lg">Enter your personal details</p>
@@ -73,10 +73,10 @@ const Login: React.FC = () => {
                 <div className="md:col-span-5 text-right">
                   <div className="inline-flex items-end">
                     <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                      onClick={onLogin}
+                      onClick={onLogIn}
                       type="button"
                     >
-                      Login
+                      Log In
                     </button>
                   </div>
                 </div>
@@ -86,7 +86,7 @@ const Login: React.FC = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default LogIn;

@@ -16,6 +16,7 @@ module.exports = {
     ],
     semi: ['error', 'always'],
     quotes: ['error', 'single'],
+    "spaced-comment": ['error', "always", { "markers": ["/"] }],
     '@typescript-eslint/explicit-function-return-type': 'error'
   },
 }

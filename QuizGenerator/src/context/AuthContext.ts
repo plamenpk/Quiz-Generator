@@ -1,6 +1,6 @@
-import { createContext, type Dispatch, type SetStateAction } from 'react'
-import { type UserData } from '../common/interfaces'
-import { type User } from 'firebase/auth'
+import { createContext, type Dispatch, type SetStateAction } from 'react';
+import { type UserData } from '../common/interfaces';
+import { type User } from 'firebase/auth';
 
 interface AuthContextType {
   appState: {
@@ -19,4 +19,4 @@ export const AuthContext = createContext<AuthContextType>({
     userData: null
   },
   setUser: () => {}
-})
+});

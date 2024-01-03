@@ -40,19 +40,20 @@ const App: React.FC = () => {
     })
       .catch(e => { console.error(e); });
   }, [user]);
-  console.log(appState.user);
+  
   return (
     <>
       <AuthContext.Provider value={{ appState, setUser: setAppState }}>
         <Navbar />
-        <div className="flex" style={{
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-        >
+        <div className="flex">
           <Sidebar />
-          <div className="flex-grow">
+          <div className="flex-grow mt-6"
+          style={{
+            backgroundImage: `url(${backgroundImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}
+          >
             <AppRoutes />
           </div>
         </div >
