@@ -22,6 +22,10 @@ const App: React.FC = () => {
     user: null
   });
 
+  if (appState.user !== user) {
+    setAppState((prevState) => ({ ...prevState, user }));
+  }
+
   useEffect(() => {
     if (user == null) {
       return;
@@ -40,7 +44,7 @@ const App: React.FC = () => {
     })
       .catch(e => { console.error(e); });
   }, [user]);
-  
+
   return (
     <>
       <AuthContext.Provider value={{ appState, setUser: setAppState }}>
@@ -48,11 +52,11 @@ const App: React.FC = () => {
         <div className="flex">
           <Sidebar />
           <div className="flex-grow mt-6"
-          style={{
-            backgroundImage: `url(${backgroundImage})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
+            style={{
+              backgroundImage: `url(${backgroundImage})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }}
           >
             <AppRoutes />
           </div>

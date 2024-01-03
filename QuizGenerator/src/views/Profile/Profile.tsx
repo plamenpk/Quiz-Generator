@@ -41,7 +41,6 @@ const Profile: React.FC = () => {
     }
   };
 
-  console.log(data, 'profile');
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const files: FileList | null = e.target.files;
 

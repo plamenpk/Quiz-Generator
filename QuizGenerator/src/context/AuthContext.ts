@@ -15,8 +15,8 @@ interface AuthContextType {
 
 export const AuthContext = createContext<AuthContextType>({
   appState: {
-    user: null,
-    userData: null
+    user: {} as User,
+    userData: {} as UserData
   },
-  setUser: () => {}
+  setUser: () => { }
 });
