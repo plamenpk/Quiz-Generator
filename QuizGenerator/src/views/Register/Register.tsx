@@ -136,7 +136,7 @@ const Register: React.FC = () => {
                   <div className="md:col-span-2">
                     <label>Phone Number</label>
                     <input className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                      type="text"
+                      type="number"
                       value={form.phoneNumber}
                       onChange={updateForm('phone')}
                     />
@@ -162,7 +162,7 @@ const Register: React.FC = () => {
                   <div className="md:col-span-5 text-right">
                     <div className="flex justify-between items-end">
                       <Link
-                        className="pr-18 text-blue-700"
+                        className="pr-18 text-blue-500"
                         to="/Login"
                       >
                         Already have an account?

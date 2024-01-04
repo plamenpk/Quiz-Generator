@@ -12,7 +12,7 @@ export const createUser = async (
   firstName: string,
   lastName: string,
   role: string,
-  phoneNumber: string,
+  phoneNumber: number | string,
   address: string
 ): Promise<void> => {
   await set(ref(database, `users/${username}`), {

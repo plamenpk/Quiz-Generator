@@ -11,3 +11,8 @@ export interface UserData {
   username: string
   uid: string
 }
+
+export interface Question{
+  question: string
+  answers: [{ text: string, isCorrect: boolean }]
+}

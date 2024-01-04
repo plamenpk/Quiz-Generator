@@ -11,6 +11,7 @@ import { type UserData } from './common/interfaces';
 import { type User } from 'firebase/auth';
 import { type DataSnapshot } from 'firebase/database';
 import backgroundImage from './assets/Home.jpg';
+import { Toaster } from 'react-hot-toast';
 
 const App: React.FC = () => {
   const [user] = useAuthState(auth);
@@ -48,6 +49,7 @@ const App: React.FC = () => {
   return (
     <>
       <AuthContext.Provider value={{ appState, setUser: setAppState }}>
+        <Toaster></Toaster>
         <Navbar />
         <div className="flex">
           <Sidebar />
