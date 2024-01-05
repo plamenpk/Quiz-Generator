@@ -3,6 +3,7 @@ import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../../services/auth.services';
+import toast from 'react-hot-toast';
 
 const LogIn: React.FC = () => {
   const [form, setForm] = useState({
@@ -23,11 +24,11 @@ const LogIn: React.FC = () => {
 
   const onLogIn = (): void => {
     if (form.email.length === 0) {
-      alert('Email is required');
+      toast.error('Email is required');
       return;
     }
     if ((form.password.length === 0) && form.password.length < 6) {
-      alert('Password is required and must be at least 6 characters long');
+      toast.error('Password is required and must be at least 6 characters long');
       return;
     }
 

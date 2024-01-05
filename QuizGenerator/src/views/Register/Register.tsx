@@ -4,6 +4,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { ROLE_CHECK } from '../../common/constants';
 import { getUserByHandle, createUser } from '../../services/users.services';
 import { registerUser } from '../../services/auth.services';
+import toast from 'react-hot-toast';
 
 const Register: React.FC = () => {
   const [form, setForm] = useState({
@@ -37,7 +38,7 @@ const Register: React.FC = () => {
     e.preventDefault();
 
     if (form.email.length === 0) {
-      alert('Email is required!');
+      toast.error('Email is required!');
       return;
     }
 
@@ -50,36 +51,37 @@ const Register: React.FC = () => {
     getUserByHandle(form.username)
       .then(async (snapshot) => {
         if (snapshot.exists()) {
-          alert('Username already exists!');
+          toast.error('Username already exists!');
+          return;
         }
-        return await registerUser(form.email, form.password);
-      })
-      .then((credential) => {
-        createUser(
-          form.username,
-          credential.user.uid,
-          credential.user.email ?? '',
-          form.firstName,
-          form.lastName,
-          form.role,
-          form.phoneNumber,
-          form.address
-        )
-          .catch(console.error);
-        setUser({
-          user: credential.user
-        });
-      })
-      .then(() => {
-        alert('User created successfully, redirecting...');
-        navigate('/home');
-      })
-      .catch((e) => { console.error(e.message); });
+        return await registerUser(form.email, form.password)
+
+          .then((credential) => {
+            createUser(
+              form.username,
+              credential.user.uid,
+              credential.user.email ?? '',
+              form.firstName,
+              form.lastName,
+              form.role,
+              form.phoneNumber,
+              form.address
+            )
+              .catch(console.error);
+            setUser({
+              user: credential.user
+            });
+          })
+          .then(() => {
+            toast.success('User created successfully, redirecting...');
+            navigate('/home');
+          })
+          .catch((e) => { console.error(e.message); });
+      });
   };
 
   return (
     <>
-      {/* <!-- component --> */}
       <div className="mt-10 p-8 bg-gray-100 flex items-center justify-center opacity-90">
         <div className="container max-w-screen-lg mx-auto">
           <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8">
@@ -118,7 +120,7 @@ const Register: React.FC = () => {
                     <label>Email Address</label>
                     <input className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                       placeholder="email@domain.com"
-                      type="email"
+                      type="text"
                       value={form.email}
                       onChange={updateForm('email')}
                     />
@@ -136,9 +138,9 @@ const Register: React.FC = () => {
                   <div className="md:col-span-2">
                     <label>Phone Number</label>
                     <input className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                      type="number"
+                      type="text"
                       value={form.phoneNumber}
-                      onChange={updateForm('phone')}
+                      onChange={updateForm('phoneNumber')}
                     />
                   </div>
                   <div className="md:col-span-5">

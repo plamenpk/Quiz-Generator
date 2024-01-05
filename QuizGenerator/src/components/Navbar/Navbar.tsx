@@ -13,6 +13,7 @@ const classNames = (...classes: string[]): string => {
 const Navbar: React.FC = () => {
 
   const { appState, setUser } = useContext(AuthContext);
+  const userData = appState?.userData;
 
   const onLogout = async (): Promise<void> => {
     try {
@@ -35,7 +36,7 @@ const Navbar: React.FC = () => {
       { name: 'Log In', to: '/logIn', current: false },
       { name: 'Register', to: '/register', current: false },
     ];
-  
+
   return (
     <Disclosure as="nav" className="fixed top-0 left-0 w-full z-50 bg-white border-b">
       {({ open }) => (
@@ -81,18 +82,20 @@ const Navbar: React.FC = () => {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button
+                {userData && <button
                   type="button"
                   className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 >
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
-
+                </button>}
+                <div className="flex items-center gap-x-3.5 py-2 px-2.5 dark:bg-gray-900 dark:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+                  {appState?.userData && '@'}{appState?.userData?.username}
+                </div>
                 {/* Profile dropdown */}
-                <Menu as="div" className="relative ml-3">
-                  <div>
+                <Menu as="div" className="">
+                  {userData && <div>
                     <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="absolute -inset-1.5" />
                       <span className="sr-only">Open user menu</span>
@@ -102,7 +105,7 @@ const Navbar: React.FC = () => {
                         alt={Logo}
                       />
                     </Menu.Button>
-                  </div>
+                  </div>}
                   <Transition
                     as={Fragment}
                     enter="transition ease-out duration-100"
@@ -161,7 +164,7 @@ const Navbar: React.FC = () => {
           </Disclosure.Panel>
         </>
       )}
-    </Disclosure>
+    </Disclosure >
   );
 };
 export default Navbar;

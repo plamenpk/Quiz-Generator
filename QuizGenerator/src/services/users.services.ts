@@ -56,3 +56,19 @@ export const updateUserData = (
     [pathAddress]: address,
   });
 };
+
+export const updateUserScore = (username: string,
+  quizId: string,
+  title: string,
+  score: number,
+  category: string,
+  userAnswers:string[],
+  maxPassingPoints: number,
+  minPassingPoints: number
+): Promise<void> => {
+  const updateUserScore = {};
+  updateUserScore[`/users/${username}/score/${title}`] = { score, title, id: `${quizId}`, category, userAnswers, maxPassingPoints, minPassingPoints, resolvedOn: Date.now(), };
+  updateUserScore[`/quizzes/${quizId}/scoreBoard/${username}`] = { username, score };
+
+  return update(ref(database), updateUserScore);
+};

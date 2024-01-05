@@ -1,4 +1,5 @@
 export interface UserData {
+  assignedQuizzes: string[]
   address: string
   createdOn: Date
   email: string

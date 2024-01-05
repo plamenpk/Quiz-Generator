@@ -4,6 +4,7 @@ import { updateUserData } from '../../services/users.services';
 import { MAX_NAME_LENGTH, MIN_NAME_LENGTH } from '../../common/constants';
 import { useNavigate } from 'react-router-dom';
 import { uploadToStorage } from '../../services/uploadToStorage.services';
+import toast from 'react-hot-toast';
 
 const Profile: React.FC = () => {
   const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
@@ -33,7 +34,6 @@ const Profile: React.FC = () => {
         .then((url) => {
           setData(url);
           setUpload('Uploaded');
-          console.log('uploaded');
         })
         .catch((error) => {
           console.error('Error uploading: ', error);
@@ -48,7 +48,6 @@ const Profile: React.FC = () => {
       setProfilePhoto(files[0] as File);
       const url: string = URL.createObjectURL(files[0]);
       setPreviewUrl(url);
-      console.log('logPrev');
     }
   };
 
@@ -74,18 +73,8 @@ const Profile: React.FC = () => {
     }
 
     if (!form.email) {
-      alert('Email is required');
+      toast.error('Email is required');
       return;
-    }
-
-    if (form.address) {
-      if (
-        form.address.length < MIN_NAME_LENGTH ||
-        form.address.length > MAX_NAME_LENGTH
-      ) {
-        alert('Address is required');
-        return;
-      }
     }
 
     if (!form.firstName) form.firstName = appState?.userData?.firstName ?? '';
@@ -102,11 +91,11 @@ const Profile: React.FC = () => {
       data ?? ''
     )
       .then(() => {
-        alert('Profile updated successfully');
+        toast.success('Profile updated successfully');
         navigate('/home');
       })
       .catch((err) => {
-        alert(err.message);
+        toast.error(err.message);
       });
   };
 
