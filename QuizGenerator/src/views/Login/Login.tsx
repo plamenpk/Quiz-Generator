@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/semi */
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../../services/auth.services';
 import toast from 'react-hot-toast';
+import Button from '../../components/UI/Buttons/Button';
 
 const LogIn: React.FC = () => {
   const [form, setForm] = useState({
@@ -46,7 +46,7 @@ const LogIn: React.FC = () => {
 
   return (
     <div className="mt-10 p-8 bg-gray-100 flex items-center justify-center opacity-90">
-      <div className="container max-w-screen-lg mx-auto mt-16 mb-60">
+      <div className="container max-w-screen-lg mx-auto mt-10 mb-48">
         <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8 ">
           <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
             <div className="text-gray-600">
@@ -73,12 +73,7 @@ const LogIn: React.FC = () => {
                 </div>
                 <div className="md:col-span-5 text-right">
                   <div className="inline-flex items-end">
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                      onClick={onLogIn}
-                      type="button"
-                    >
-                      Log In
-                    </button>
+                    <Button text="Log In" onClickFunction={onLogIn} buttonType="button" />
                   </div>
                 </div>
               </div>

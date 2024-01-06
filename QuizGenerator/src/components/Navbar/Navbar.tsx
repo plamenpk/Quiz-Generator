@@ -70,7 +70,7 @@ const Navbar: React.FC = () => {
                         key={item.name}
                         to={item.to}
                         className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'text-black hover:bg-gray-300 hover:text-white',
+                          item.current ? 'bg-gray-900 text-white' : 'text-lg text-black hover:bg-gray-300 hover:text-white',
                           'px-3 py-2 font-medium'
                         )}
                         aria-current={item.current ? 'page' : undefined}

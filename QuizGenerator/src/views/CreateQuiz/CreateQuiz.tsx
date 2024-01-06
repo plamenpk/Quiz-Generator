@@ -5,6 +5,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { titleCheck } from '../../common/helpers';
 import { Question } from '../../common/interfaces';
 import toast from 'react-hot-toast';
+import Button from '../../components/UI/Buttons/Button';
 
 const CreateQuiz: React.FC = () => {
 
@@ -230,7 +231,7 @@ const CreateQuiz: React.FC = () => {
                         </label>
                       </div>
                     ))}
-                    <button
+                    {/* <button
                       type="button"
                       onClick={() => {
                         setQuestions((prevQuestions) => {
@@ -248,27 +249,33 @@ const CreateQuiz: React.FC = () => {
                       className="mt-2 px-4 py-2 text-sm font-medium text-white bg-blue-500 dark:bg-violet-600 dark:hover:bg-violet-500 rounded-md hover:bg-green-500 transform transition duration-500 ease-in-out hover:scale-105"
                     >
                       Add Answer
-                    </button>
+                    </button> */}
+                    <div className="mt-2 py-2">
+                      <Button text="Add Answer" buttonType="button" onClickFunction={() => {
+                        setQuestions((prevQuestions) => {
+                          return prevQuestions.map((q, qIndex) => {
+                            if (qIndex !== index) {
+                              return q;
+                            }
+                            return {
+                              ...q,
+                              answers: [...q.answers, { text: '', isCorrect: false }],
+                            };
+                          });
+                        });
+                      }} />
+                    </div>
                   </div>
                 ))}
-                <button
-                  type="button"
-                  onClick={() => {
+                <div className="py-2 flex justify-between items-end">
+                  <Button text="Add Question" buttonType="button" onClickFunction={() => {
                     setQuestions((prevQuestions) => [
                       ...prevQuestions,
                       { question: '', answers: [{ text: '', isCorrect: false }] },
                     ]);
-                  }}
-                  className="mt-2 px-4 py-2 text-white bg-blue-500 rounded-md dark:bg-violet-600 dark:hover:bg-violet-500 transform transition duration-500 ease-in-out hover:scale-105"
-                >
-                  Add Question
-                </button>
-                <button
-                  type="submit"
-                  className="mt-2 px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-green-500 float-right transform transition duration-500 ease-in-out hover:scale-105"
-                >
-                  Create Quiz
-                </button>
+                  }} />
+                  <Button text="Create Quiz" buttonType="submit" />
+                </div>
               </div>
             </div>
           </form>

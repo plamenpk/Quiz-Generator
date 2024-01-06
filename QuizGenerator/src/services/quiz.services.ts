@@ -1,9 +1,8 @@
 import { get, push, ref, remove, set } from 'firebase/database';
 import { database } from '../config/firebase-config';
-interface Question {
-  question: string
-  answers: [{ text: string, isCorrect: boolean }]
-}
+import { Question } from '../common/interfaces';
+import { Quiz } from '../common/interfaces';
+import { DataSnapshot } from 'firebase/database';
 
 export const addQuiz = (
   username: string,
@@ -55,7 +54,7 @@ export const addQuiz = (
 
 export const quizzesRef = ref(database, 'quizzes');
 
-const fromQuizDocument = snapshot => {
+const fromQuizDocument = (snapshot: DataSnapshot): Quiz[] => {
   const quizDocument = snapshot.val();
 
   return Object.keys(quizDocument).map(key => {
@@ -65,11 +64,10 @@ const fromQuizDocument = snapshot => {
       ...quiz,
       id: key,
       createdOn: new Date(quiz.createdOn),
-      likedBy: quiz.likedBy ? Object.keys(quiz.likedBy) : [],
     };
   });
 };
-export const getAllQuizzes = () => {
+export const getAllQuizzes = (): Promise<Quiz[]> => {
 
   return get(ref(database, 'quizzes'))
     .then(snapshot => {

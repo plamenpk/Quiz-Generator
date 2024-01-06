@@ -5,6 +5,7 @@ import { ROLE_CHECK } from '../../common/constants';
 import { getUserByHandle, createUser } from '../../services/users.services';
 import { registerUser } from '../../services/auth.services';
 import toast from 'react-hot-toast';
+import Button from '../../components/UI/Buttons/Button';
 
 const Register: React.FC = () => {
   const [form, setForm] = useState({
@@ -164,17 +165,12 @@ const Register: React.FC = () => {
                   <div className="md:col-span-5 text-right">
                     <div className="flex justify-between items-end">
                       <Link
-                        className="pr-18 text-blue-500"
+                        className="pr-18 text-blue-500 hover:text-blue-700"
                         to="/Login"
                       >
                         Already have an account?
                       </Link>
-                      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                        onClick={handleRegisterUser}
-                        type="button"
-                      >
-                        REGISTER
-                      </button>
+                      <Button text="REGISTER" onClickFunction={handleRegisterUser} buttonType="button" />
                     </div>
                   </div>
                 </div>

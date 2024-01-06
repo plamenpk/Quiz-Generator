@@ -5,6 +5,7 @@ import { MAX_NAME_LENGTH, MIN_NAME_LENGTH } from '../../common/constants';
 import { useNavigate } from 'react-router-dom';
 import { uploadToStorage } from '../../services/uploadToStorage.services';
 import toast from 'react-hot-toast';
+import Button from '../../components/UI/Buttons/Button';
 
 const Profile: React.FC = () => {
   const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
@@ -101,8 +102,8 @@ const Profile: React.FC = () => {
 
   return (
     <>
-      <div className="mt-10 p-8 bg-gray-100 flex items-center justify-center opacity-90">
-        <div className="container max-w-screen-lg mx-auto">
+      <div className="mt-10 mb-16 p-8 bg-gray-100 flex items-center justify-center opacity-90">
+        <div className="container max-w-screen-lg mx-auto my-3">
           <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8">
             <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
               <div className="text-gray-600">
@@ -133,13 +134,7 @@ const Profile: React.FC = () => {
                         )}
                       </div>
                     </label>
-                    <button
-                      type="button"
-                      onClick={handleUpload}
-                      className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 dark:bg-zinc-400 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                    >
-                      {upload}
-                    </button>
+                    <Button text={upload} onClickFunction={handleUpload} buttonType="button" />
                   </div>
                 </div>
               </div>
@@ -180,19 +175,8 @@ const Profile: React.FC = () => {
                   </div>
                   <div className="md:col-span-3 text-right">
                     <div className="flex justify-between items-end">
-                      <button
-                        type="button"
-                        className="rounded-md bg-blue-500 px-3 py-2 text-sm font-semibold text-white dark:text-zinc-200 shadow-sm hover:bg-indigo-500 dark:hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        type="submit"
-                        onClick={handleUpdateUserData}
-                        className="rounded-md bg-blue-500 px-3 py-2 text-sm font-semibold text-white dark:text-zinc-200 shadow-sm hover:bg-indigo-500 dark:hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                      >
-                        Save Changes
-                      </button>
+                      <Button text="Cancel" onClickFunction={handleUpdateUserData} buttonType="button"></Button>
+                      <Button text="Save Changes" onClickFunction={handleUpdateUserData} buttonType="submit"></Button>
                     </div>
                   </div>
                 </div>

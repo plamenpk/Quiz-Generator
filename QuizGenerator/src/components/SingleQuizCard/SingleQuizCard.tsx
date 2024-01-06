@@ -17,9 +17,25 @@ import history from '../../assets/history.jpg';
 import math from '../../assets/math.jpg';
 import base from '../../assets/base.jpg';
 import astro from '../../assets/astro.jpg';
+import { Question } from '../../common/interfaces';
+
+interface SingleQuizCardProps {
+  quiz: {
+    id: string;
+    username: string;
+    title: string;
+    description: string;
+    contestType: string;
+    timeLimit: number | string;
+    category: string;
+    questions: Question[];
+    minPassingPoints: number | string;
+    maxPassingPoints: number | string;
+  };
+}
 
 
-const SingleQuizCard: React.FC = ({ quiz }) => {
+const SingleQuizCard: React.FC<SingleQuizCardProps> = ({ quiz }) => {
 
   const { appState } = useContext(AuthContext);
   const [img, setImg] = useState('');
