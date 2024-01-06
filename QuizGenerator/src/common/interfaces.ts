@@ -19,17 +19,19 @@ export interface ButtonType {
   onClickFunction?: (e: React.MouseEvent<HTMLButtonElement>) => void | undefined
 }
 
-interface Answer {
+interface Answers {
   text: string;
   isCorrect: boolean;
 }
 
 export interface Question {
   question: string;
-  answers: Answer[];
+  answers: Answers[];
 }
 
 export interface Quiz {
+  assignedUsers: string[]
+  id: string
   username: string,
   title: string,
   description: string,

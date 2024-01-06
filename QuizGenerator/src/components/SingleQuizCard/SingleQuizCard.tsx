@@ -106,9 +106,9 @@ const SingleQuizCard: React.FC<SingleQuizCardProps> = ({ quiz }) => {
 
   return (
     <>
-      {quiz && <div className="mb-10 overflow-hidden rounded-lg shadow-xl border-indigo-300">
+      {quiz && <div className="mb-4 overflow-hidden rounded-lg shadow-xl border-indigo-300">
         <div className="relative">
-          <img src={img} alt="" className="h-60 w-full" />
+          <img src={img} alt="" className="h-30 w-full" />
           <div className="absolute top-0 right-0 z-10">
             {showTimer
               ? <RemainingTime
@@ -121,43 +121,46 @@ const SingleQuizCard: React.FC<SingleQuizCardProps> = ({ quiz }) => {
               : <div className="text-right mr-2 mt-2 text-lg">You score {score}</div>}
           </div>
         </div>
-        <div className="text-center bg-white dark:bg-gradient-to-br dark:from-slate-400 dark:to-zinc-500 dark:text-zinc-100 opacity-90 pb-8">
+        <div className="pb-4 bg-white dark:bg-gradient-to-br dark:from-slate-400 dark:to-zinc-500 dark:text-zinc-100 opacity-90">
           <h3>
             <Link
               to={`/singleQuizView/${quiz?.id}`}
-              className="mb-4 block text-xl font-semibold text-dark hover:text-primary dark:text-white sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px]">
+              className="mb-4 block text-xl pb-4 text-center font-semibold text-dark hover:text-primary dark:text-white sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px]">
               {quiz?.title}
             </Link>
           </h3>
-          <p className="mb-7 text-base leading-relaxed text-body-color ">
+          <p className="mb-5 text-base pb-4 text-center leading-relaxed">
             {quiz?.description}
           </p>
-          <p className="mb-7 text-base leading-relaxed text-body-color ">
-            {`In this quiz you have ${quiz?.timeLimit} minutes to answer ${quiz?.question?.length} questions.`}
+          <p className="pl-3 text-base leading-relaxed">
+            {`In this quiz you have ${quiz?.timeLimit} minutes`}
+          </p>
+          <p className="mb-5 pl-3 text-base leading-relaxed">
+            {`to answer ${quiz?.questions?.length} questions.`}
           </p>
           <div className="flex justify-center space-x-4">
             {!showSummary && <Link
               to={`/singleQuizView/${quiz?.id}`}
-              className="inline-block mx-1 px-4 py-2 bg-violet-300  rounded-lg text-center font-medium transform transition duration-500 ease-in-out hover:scale-105 hover:bg-violet-500 hover:text-zinc-100 dark:text-black dark:hover:text-zinc-100 dark:bg-indigo-600"
+              className="rounded-sm px-3 py-2 bg-blue-500 hover:bg-blue-700 text-base text-white dark:text-zinc-200 shadow-sm  dark:hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 hover:scale-105"
             >
               Enroll
             </Link>}
 
             {showTimer && <button
-              className="inline-block mx-1 px-4 py-2 bg-violet-300 rounded-lg text-center font-medium transform transition duration-500 ease-in-out hover:scale-105 hover:bg-violet-500 hover:text-white dark:text-black dark:hover:text-zinc-100 dark:bg-indigo-600"
+              className="rounded-sm px-3 py-2 bg-blue-500 hover:bg-blue-700 text-base text-white dark:text-zinc-200 shadow-sm  dark:hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 hover:scale-105"
               onClick={rejectQuiz}
             >
               Reject
             </button>}
             {showSummary && <Link
               to={`/singleQuizView/${quiz?.id}`}
-              className="inline-block mx-1 px-4 py-2 bg-violet-300 rounded-lg text-center font-medium transform transition duration-500 ease-in-out hover:scale-105 hover:bg-violet-500 hover:text-white dark:text-black dark:hover:text-zinc-100 dark:bg-indigo-600"
+              className="rounded-sm px-3 py-2 bg-blue-500 hover:bg-blue-700 text-base text-white dark:text-zinc-200 shadow-sm  dark:hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 hover:scale-105"
             >
               Summary
             </Link>}
             <Link
               to={`/singleQuizScoreboard/${quiz?.id}`}
-              className="inline-block mx-1 px-4 py-2 bg-violet-300 rounded-lg text-center font-medium transform transition duration-500 ease-in-out hover:scale-105 hover:bg-violet-500 hover:text-white dark:text-black dark:hover:text-zinc-100 dark:bg-indigo-600"
+              className="rounded-sm px-3 py-2 bg-blue-500 hover:bg-blue-700 text-base text-white dark:text-zinc-200 shadow-sm  dark:hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 hover:scale-105"
             >
               Scoreboard
             </Link>
