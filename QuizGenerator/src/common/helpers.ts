@@ -23,3 +23,5 @@ export const dateFormat = (timestamp: number): string => {
 
   return `${day}/${month}/${year}`;
 };
+
+export const timeLimitInSeconds = (timeLimit: number): number => timeLimit * 60;

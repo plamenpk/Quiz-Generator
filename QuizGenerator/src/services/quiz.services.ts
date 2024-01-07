@@ -92,3 +92,25 @@ export const removeAssignmentsFromUser = (user: string, id: string): Promise<voi
   return remove(ref(database, `/users/${user}/assignedQuizzes/${id}`));
 };
 
+export const getQuizById = (id: string) => {
+
+  return get(ref(database, `quizzes/${id}`))
+    .then(result => {
+      if (!result.exists()) {
+        throw new Error(`Quiz with id ${id} does not exist!`);
+      }
+
+      const quiz = result.val();
+      quiz.id = id;
+      quiz.createdOn = new Date(quiz.createdOn);
+     
+      return quiz;
+    });
+};
+
+export const updatePublicQuizScoreBoard = (quizId: string, attempts: string, score: string) => {
+  const updateUserScore = {};
+ 
+  updateUserScore[`/quizzes/${quizId}/scoreBoard/${attempts}`] = { attempts, score } 
+  return update(ref(database), updateUserScore);
+};

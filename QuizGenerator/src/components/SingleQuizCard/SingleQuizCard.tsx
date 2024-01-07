@@ -17,6 +17,7 @@ import history from '../../assets/history.jpg';
 import math from '../../assets/math.jpg';
 import base from '../../assets/base.jpg';
 import astro from '../../assets/astro.jpg';
+import geography from '../../assets/geography.jpg';
 import { Question } from '../../common/interfaces';
 
 interface SingleQuizCardProps {
@@ -59,6 +60,9 @@ const SingleQuizCard: React.FC<SingleQuizCardProps> = ({ quiz }) => {
           break;
         case CATEGORIES.ASTRONOMY:
           setImg(astro);
+          break;
+          case CATEGORIES.GEOGRAPHY:
+          setImg(geography);
           break;
         default:
           setImg(base);

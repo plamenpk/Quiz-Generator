@@ -23,5 +23,6 @@ export const CATEGORIES = {
   IT: 'IT',
   BIOLOGY: 'Biology',
   HISTORY: 'History',
-  ASTRONOMY: 'Astronomy'
+  ASTRONOMY: 'Astronomy',
+  GEOGRAPHY:'Geography'
 };

@@ -42,3 +42,9 @@ export interface Quiz {
   minPassingPoints: number | string,
   maxPassingPoints: number | string
 }
+
+export interface PublicQuizResolvedPropsTypes {
+  id: string
+  score: number
+  userAnswers: Answers[]
+}
