@@ -14,35 +14,37 @@ import {
 } from '../../services/quiz.services';
 import PublicQuizResolved from '../PublicQuizResolved/PublicQuizResolved';
 import { QUIZ_STATUS } from '../../common/constants';
+import { Quiz } from '../../common/interfaces';
+import { Answer } from '../../common/interfaces';
 
-const SingleQuizView = () => {
+const SingleQuizView: React.FC = () => {
 
   const { id } = useParams();
   const { appState } = useContext(AuthContext);
-  const [quiz, setQuiz] = useState(null);
-  const [userAnswers, setUserAnswers] = useState([]);
+  const [quiz, setQuiz] = useState<Quiz>();
+  const [userAnswers, setUserAnswers] = useState<Answer>([]);
   const [score, setScore] = useState(0);
   const [timerFinished, setTimerFinished] = useState(false);
   const [isQuizResolved, setIsQuizResolved] = useState(false);
   const activeQuestionIndex = userAnswers.length;
   const [questions, setQuestions] = useState([]);
   const [attempts, setAttempts] = useState(1);
-console.log(appState?.userData?.score)
+
   useEffect(() => {
-    getQuizById(id)
-      .then((fetchedQuiz) => {
-        setQuiz(fetchedQuiz);
-        setQuestions(fetchedQuiz.questions);
-        if (fetchedQuiz?.scoreBoard) {
-          setAttempts(Object.values(fetchedQuiz?.scoreBoard).length + 1);
-          console.log(fetchedQuiz);
-        }
-      })
-      .catch((error) => {
-        toast.error('Error fetching quiz details:', error);
-        setQuiz(null);
-      });
-  }, [id, quiz?.score]);
+    if (id) {
+      getQuizById(id)
+        .then((fetchedQuiz) => {
+          setQuiz(fetchedQuiz);
+          setQuestions(fetchedQuiz.questions);
+          if (fetchedQuiz?.scoreBoard) {
+            setAttempts(Object.values(fetchedQuiz?.scoreBoard).length + 1);
+          }
+        })
+        .catch((error) => {
+          toast.error('Error fetching quiz details:', error);
+        });
+    }
+  }, [id]);
   useEffect(() => {
     if (appState?.userData?.score) {
       setIsQuizResolved(Object.values(appState?.userData?.score).map(el => el.id).includes(id));
@@ -57,7 +59,7 @@ console.log(appState?.userData?.score)
     });
   };
 
-  const handleRandomizeQuiz = () => {
+  const handleRandomizeQuiz = (): void => {
     const randomizedQuestions = [...questions];
     for (let i = randomizedQuestions.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -72,7 +74,7 @@ console.log(appState?.userData?.score)
     }
   }, [userAnswers, activeQuestionIndex]);
 
-  const handleTimerFinish = () => {
+  const handleTimerFinish = (): void => {
     setTimerFinished(true);
   };
 
@@ -92,33 +94,35 @@ console.log(appState?.userData?.score)
     const scorePoints = Math.ceil(score / quiz?.questions.length * quiz?.maxPassingPoints);
 
     if (appState?.user) {
+      if (appState?.userData) {
+        updateUserScore(
+          appState.userData.username,
+          id || '',
+          quiz?.title || '',
+          scorePoints,
+          quiz?.category ?? '',
+          userAnswers,
+          quiz?.maxPassingPoints,
+          quiz?.minPassingPoints
+        )
+          .then(() => console.log('Quiz result saved successfully'))
+          .catch((e) => toast.error(e));
 
-      updateUserScore(
-        appState?.userData.username,
-        id,
-        quiz?.title,
-        scorePoints,
-        quiz?.category,
-        userAnswers,
-        quiz?.maxPassingPoints,
-        quiz?.minPassingPoints)
-        .then(() => console.log('Quiz result saved successfully'))
-        .catch((e) => toast.error(e));
+        removeFromAssignments(appState.userData.username, id || '')
+          .then(() => console.log('Quiz assignment updated successfully'))
+          .catch((e) => toast.error(e));
 
-      removeFromAssignments(appState?.userData.username, id)
-        .then(() => console.log('Quiz assignment updated successfully'))
-        .catch((e) => toast.error(e));
+        removeAssignmentsFromQuiz(appState.userData.username, id || '')
+          .then(() => console.log('Quiz assignment updated successfully'))
+          .catch((e) => toast.error(e));
 
-      removeAssignmentsFromQuiz(appState?.userData.username, id)
-        .then(() => console.log('Quiz assignment updated successfully'))
-        .catch((e) => toast.error(e));
-
-      removeAssignmentsFromUser(appState?.userData.username, id)
-        .then(() => console.log('Quiz assignment updated successfully'))
-        .catch((e) => toast.error(e));
+        removeAssignmentsFromUser(appState.userData.username, id || '')
+          .then(() => console.log('Quiz assignment updated successfully'))
+          .catch((e) => toast.error(e));
+      }
     }
     else {
-      updatePublicQuizScoreBoard(id, attempts, scorePoints);
+      updatePublicQuizScoreBoard(id || '', attempts, scorePoints);
     }
 
     return <PublicQuizResolved id={id} score={scorePoints} userAnswers={userAnswers}></PublicQuizResolved>;
@@ -126,16 +130,11 @@ console.log(appState?.userData?.score)
 
   return (
     <>
-      {quiz && <div className="flex flex-col overflow-auto h-screen items-center justify-center">
-        <div className="text-center md:pb-8 mt-20">
-          <h1 className="text-5xl md:text-6xl font-extrabold leading-tighter tracking-tighter mb-4 pr-2 pt-6" data-aos="zoom-y-out">
-            <span className="bg-clip-text p-1 text-transparent bg-gradient-to-r from-blue-600 to-violet-400">{quiz?.title}</span>
+      {quiz && <div className="flex flex-col overflow-auto mt-12 pt-2 items-center justify-center">
+        <div className="text-center md:pb-2">
+          <h1 className="text-5xl md:text-6xl font-extrabold leading-tighter tracking-tighter" data-aos="zoom-y-out">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-400">{quiz?.title}title</span>
           </h1>
-        </div>
-        <div className="max-w-3xl mx-auto">
-          <p className="text-xl text-gray-600 mb-10 text-center" data-aos="zoom-y-out" data-aos-delay="150">
-            Our landing page template works on all devices, so you only have to set it up once, and get beautiful results forever.
-          </p>
         </div>
         <div className="flex xl:space-x-96 lg:space-x-28 sm:space-x-24">
           <div className="">
@@ -146,9 +145,9 @@ console.log(appState?.userData?.score)
           </div>
           <p className="pt-7">Maximum points available - 100</p>
         </div>
-        <div id="quiz" className="flex flex-col p-10 mb-20 bg-gradient-to-r from-indigo-400 rounded-lg w-full md:w-3/4 lg:w-2/3 shadow-xl mx-auto">
+        <div id="quiz" className="flex flex-col p-10 opacity-90 w-full md:w-3/4 lg:w-2/3 shadow-xl mx-auto">
           <div className="mb">
-            <div className="w-20 h-20 pt-4 pl-2 border-2 border-amber-300 rounded-full">
+            <div className="w-20 h-20 pt-4 pl-2 border border-blue-700 rounded-full">
               <Timer onTimerFinish={handleTimerFinish} timeLimit={quiz?.timeLimit}></Timer>
             </div>
           </div>
@@ -157,7 +156,7 @@ console.log(appState?.userData?.score)
             <ul id="answers" className="grid grid-cols-1 md:grid-cols-1 gap-4 mx-auto">
               {questions[activeQuestionIndex]?.answers.map((answer) => (
                 <div key={answer.text} className="">
-                  <button className="border-2 border-indigo-500 px-4 py-2 rounded-lg w-full text-center bg-gray-200 hover:bg-green-500"
+                  <button className="border rounded border-blue-700 px-4 py-2  w-full text-center bg-blue-200 hover:bg-green-300"
                     onClick={() => handleSelectAnswer(answer)}>
                     {answer.text}
                   </button>

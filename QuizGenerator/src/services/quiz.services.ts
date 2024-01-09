@@ -1,8 +1,9 @@
-import { get, push, ref, remove, set } from 'firebase/database';
+import { get, push, ref, remove, set, update } from 'firebase/database';
 import { database } from '../config/firebase-config';
 import { Question } from '../common/interfaces';
 import { Quiz } from '../common/interfaces';
 import { DataSnapshot } from 'firebase/database';
+import { PublicScoreBoardUpdateTypes } from '../common/interfaces';
 
 export const addQuiz = (
   username: string,
@@ -92,7 +93,7 @@ export const removeAssignmentsFromUser = (user: string, id: string): Promise<voi
   return remove(ref(database, `/users/${user}/assignedQuizzes/${id}`));
 };
 
-export const getQuizById = (id: string) => {
+export const getQuizById = (id: string): Promise<Quiz> => {
 
   return get(ref(database, `quizzes/${id}`))
     .then(result => {
@@ -103,14 +104,14 @@ export const getQuizById = (id: string) => {
       const quiz = result.val();
       quiz.id = id;
       quiz.createdOn = new Date(quiz.createdOn);
-     
+
       return quiz;
     });
 };
 
-export const updatePublicQuizScoreBoard = (quizId: string, attempts: string, score: string) => {
-  const updateUserScore = {};
- 
-  updateUserScore[`/quizzes/${quizId}/scoreBoard/${attempts}`] = { attempts, score } 
+export const updatePublicQuizScoreBoard = (quizId: string, attempts: number, score: number): Promise<void> => {
+  const updateUserScore: PublicScoreBoardUpdateTypes = {};
+
+  updateUserScore[`/quizzes/${quizId}/scoreBoard/${attempts}`] = { attempts, score };
   return update(ref(database), updateUserScore);
 };

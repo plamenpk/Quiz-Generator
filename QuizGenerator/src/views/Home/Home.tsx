@@ -28,9 +28,9 @@ const Home: React.FC = () => {
         ? quizzes.filter(
           (quiz) =>
             (!quiz.assignedUsers === false &&
-              Object.keys(quiz.assignedUsers).includes(appState?.userData?.username)) ||
+              Object.keys(quiz.assignedUsers).includes(appState?.userData?.username ?? '')) ||
             (!quiz.scoreBoard === false &&
-              Object.keys(quiz?.scoreBoard).includes(appState?.userData?.username))
+              Object.keys(quiz?.scoreBoard).includes(appState?.userData?.username ?? ''))
         )
         : [];
     setQuizzes(filteredQuizzes);
@@ -53,7 +53,6 @@ const Home: React.FC = () => {
             </span>
           </h1>
         </div>
-
       </div>
       <CardContainer quizzes={quizzes}/>
     </>
