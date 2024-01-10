@@ -8,6 +8,7 @@ import AuthenticatedRoute from '../../hoc/AuthenticatedRoute';
 import Profile from '../../views/Profile/Profile';
 import CreateQuiz from '../../views/CreateQuiz/CreateQuiz';
 import SingleQuizView from '../../views/SingleQuizView/SingleQuizView';
+import QuizAssignments from '../../views/Home/QuizAssignments/QuizAssignments';
 
 const AppRoutes: React.FC = () => {
   return (
@@ -19,6 +20,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/profile" element={<AuthenticatedRoute><Profile /></AuthenticatedRoute>} />
       <Route path="/createQuiz" element={<CreateQuiz />} />
       <Route path="/singleQuizView/:id" element={<SingleQuizView />} />
+      <Route path="/quizAssignments" element={<QuizAssignments />} />
     </Routes>
   );
 };

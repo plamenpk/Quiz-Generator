@@ -45,7 +45,7 @@ export interface Question {
 }
 
 export interface Quiz {
-  assignedUsers: string[]
+  assignedUsers?: string[]
   id: string
   username: string
   title: string
@@ -74,4 +74,16 @@ export interface PublicScoreBoardUpdateTypes {
     attempts: number;
     score: number;
   };
+}
+
+export interface TableTypes {
+  quizzes: Quiz[]
+  searchTerm: string
+  setSearchTerm: (value: string) => void
+  headCol1: string
+  headCol2: string
+  headCol3: string
+  headCol4: string
+  headCol5: string
+  img?: string
 }
