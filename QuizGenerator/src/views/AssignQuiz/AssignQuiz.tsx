@@ -1,21 +1,21 @@
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { getAllUsers } from "../../services/users.services";
-import { quizAssignments, getQuizById } from "../../services/quiz.services";
-import toast from "react-hot-toast";
-import { searchUser } from "../../services/admin.services";
+import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { getAllUsers } from '../../services/users.services';
+import { quizAssignments, getQuizById } from '../../services/quiz.services';
+import toast from 'react-hot-toast';
+import { searchUser } from '../../services/users.services';
 
 
-const AssignQuiz = () => {
+const AssignQuiz:React.FC = () => {
 
   const { id } = useParams();
   const [date, setDate] = useState('');
-  const [finalDate, setFinalDate] = useState('')
+  const [finalDate, setFinalDate] = useState('');
   const [users, setUsers] = useState([]);
-  const [quiz, setQuiz] = useState('')
+  const [quiz, setQuiz] = useState('');
   const [assignedUsers, setAssignedUsers] = useState([]);
   const [index, setIndex] = useState(0);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(10);
   const [result, setResult] = useState([]);
@@ -23,20 +23,22 @@ const AssignQuiz = () => {
   useEffect(() => {
     getAllUsers()
       .then(snapshot => {
-        setUsers(Object.values(snapshot.val()))
+        setUsers(Object.values(snapshot.val()));
       })
       .catch(e => toast.error(e));
   }, []);
 
   useEffect(() => {
+    if(id){
     getQuizById(id)
       .then(snapshot => {
         snapshot.assignedUsers ?
           setAssignedUsers(Object.keys(snapshot.assignedUsers))
-          : assignedUsers
-        setQuiz(snapshot)
+          : assignedUsers;
+        setQuiz(snapshot);
       })
       .catch(e => toast.error(e));
+    }
   }, [id, assignedUsers]);
 
   const assignQuizHandler = (user) => {
@@ -59,13 +61,14 @@ const AssignQuiz = () => {
 
     quizAssignments(user, id, dateInSeconds, finalDateInSeconds)
       .then(() => {
-        toast.success('quiz assigned successfully')
+        toast.success('quiz assigned successfully');
       })
       .catch(e => console.error(e));
-  }
+  };
 
   useEffect(() => {
-    searchUser("").then(setResult);
+    searchUser('')
+    .then(setResult)
     const timer = setInterval(() => {
       setIndex((prevIndex) => prevIndex + 1);
     }, 90);
@@ -90,7 +93,7 @@ const AssignQuiz = () => {
   return (
     <>
       <div className="h-screen  pb-20 overflow-auto p-5">
-        <div className="mt-20 justify-center items-center border-4 p-10 rounded-lg bg-gradient-to-bl from-indigo-400 dark:from-zinc-600">
+        <div className="mt-20 justify-center items-center border-4 p-10 rounded bg-gray-100 dark:from-zinc-600">
           <div className=" flex flex-col ">
 
             <div className=" text-sm text-black flex items-center justify-end dark:text-zinc-200">
@@ -112,17 +115,17 @@ const AssignQuiz = () => {
               </div>
             </div><input
               type="text"
-              className="border p-2 rounded w-full sm:w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 placeholder-orange-300 dark:bg-zinc-400 dark:placeholder-orange-200 font-bold"
+              className="border p-2 rounded w-full sm:w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 dark:bg-zinc-400 dark:placeholder-orange-200"
               placeholder="Search for user..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <div className="mt-4 ">
-            <table className="table-auto rounded w-full text-center text-white dark:text-zinc-200">
-              <thead className=" text-lg border dark:bg-gradient-to-br dark:from-zinc-600">
+            <table className="table-auto rounded text-black w-full text-center text-white dark:text-zinc-200">
+              <thead className=" text-lg border text-black dark:bg-gradient-to-br dark:from-zinc-600">
                 <tr>
-                  <th className=" px-4 py-2">Username</th>
+                  <th className=" px-4 py-2 text-black">Username</th>
                   <th className=" px-4 py-2">Last Name</th>
                   <th className=" px-4 py-2"></th>
                   <th className=" px-4 py-2">Points</th>
@@ -130,7 +133,7 @@ const AssignQuiz = () => {
                 </tr>
               </thead>
 
-              <tbody>
+              <tbody className=" text-lg text-black">
                 {filteredUsers.length > 0 ? (
                   filteredUsers.map((user) => (
                     <tr key={user.uid} className="border dark:bg-gradient-to-br dark:from-zinc-800">
@@ -144,21 +147,22 @@ const AssignQuiz = () => {
                       <td className=" px-4 py-2">
                         {assignedUsers.length > 0
                           ? assignedUsers.includes(user.username)
-                            ? <button >Assigned</button>
+                            ? <div className="px-1 py-1">Assigned</div>
                             : !user?.score ? <button onClick={() => assignQuizHandler(user.username)}>Assign</button> :
                               Object.values(user.score).map((quiz) => quiz.id).includes(id)
-                                ? <button >Resolved</button>
+                                ? <div >Resolved</div>
                                 : <button onClick={() => assignQuizHandler(user.username)}>Assign</button>
                           : !user?.score ? <button onClick={() => assignQuizHandler(user.username)}>Assign</button> :
                             Object.values(user.score).map((quiz) => quiz.id).includes(id)
-                              ? <button >Resolved</button>
+                              ? <div >Resolved</div>
                               : <button onClick={() => assignQuizHandler(user.username)}>Assign</button>}
+                              {/* <button onClick={() => assignQuizHandler(user.username)}>Assign</button> */}
                       </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="5" className="text-center py-4 text-2xl">No results found</td>
+                    <td colSpan={5} className="text-center py-4 text-2xl">No results found</td>
                   </tr>
                 )}
               </tbody>
@@ -197,7 +201,7 @@ const AssignQuiz = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default AssignQuiz
+export default AssignQuiz;

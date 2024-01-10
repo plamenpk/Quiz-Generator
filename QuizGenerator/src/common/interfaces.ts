@@ -76,6 +76,10 @@ export interface PublicScoreBoardUpdateTypes {
   };
 }
 
+export interface QuizAssignmentsTypes {
+  [key: string]: [number, number];
+}
+
 export interface TableTypes {
   quizzes: Quiz[]
   searchTerm: string
@@ -86,4 +90,8 @@ export interface TableTypes {
   headCol4: string
   headCol5: string
   img?: string
+}
+
+export interface CommentUserResultsTypes {
+  [key: string]: string
 }

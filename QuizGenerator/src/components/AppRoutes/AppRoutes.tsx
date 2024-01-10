@@ -9,6 +9,11 @@ import Profile from '../../views/Profile/Profile';
 import CreateQuiz from '../../views/CreateQuiz/CreateQuiz';
 import SingleQuizView from '../../views/SingleQuizView/SingleQuizView';
 import QuizAssignments from '../../views/Home/QuizAssignments/QuizAssignments';
+import AssignQuiz from '../../views/AssignQuiz/AssignQuiz';
+import AssignedQuizzes from '../../views/AssignedQuizzes/AssignedQuizzes';
+import FinishedQuizzes from '../../views/FinishedQuizzes/FinishedQuizzes';
+import QuizScoreboard from '../../views/QuizScoreboard/QuizScoreboard';
+import UserAnswers from '../../views/UserAnswers/UserAnswers';
 
 const AppRoutes: React.FC = () => {
   return (
@@ -21,6 +26,11 @@ const AppRoutes: React.FC = () => {
       <Route path="/createQuiz" element={<CreateQuiz />} />
       <Route path="/singleQuizView/:id" element={<SingleQuizView />} />
       <Route path="/quizAssignments" element={<QuizAssignments />} />
+      <Route path="/assign-quiz/:id" element={<AssignQuiz />} />
+      <Route path="/assigned-quizzes" element={<AssignedQuizzes />} />
+      <Route path="/finished-quizzes" element={<FinishedQuizzes />} />
+      <Route path="/quiz-scoreboard/:id" element={<QuizScoreboard />} />
+      <Route path="/user-answers/:id" element={<UserAnswers />} />
     </Routes>
   );
 };

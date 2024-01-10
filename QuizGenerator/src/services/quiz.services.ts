@@ -1,6 +1,6 @@
 import { get, push, ref, remove, set, update } from 'firebase/database';
 import { database } from '../config/firebase-config';
-import { Question } from '../common/interfaces';
+import { Question, QuizAssignmentsTypes } from '../common/interfaces';
 import { Quiz } from '../common/interfaces';
 import { DataSnapshot } from 'firebase/database';
 import { PublicScoreBoardUpdateTypes } from '../common/interfaces';
@@ -114,4 +114,12 @@ export const updatePublicQuizScoreBoard = (quizId: string, attempts: number, sco
 
   updateUserScore[`/quizzes/${quizId}/scoreBoard/${attempts}`] = { attempts, score };
   return update(ref(database), updateUserScore);
+};
+
+export const quizAssignments = (user: string, id: string, openFrom: number, openTo: number): Promise<void> => {
+  const quizAssignment: QuizAssignmentsTypes = {};
+  quizAssignment[`/assignments/users/${user}/${id}`] = [openFrom, openTo];
+  quizAssignment[`/quizzes/${id}/assignedUsers/${user}`] = [openFrom, openTo];
+  quizAssignment[`/users/${user}/assignedQuizzes/${id}`] = [openFrom, openTo];
+  return update(ref(database), quizAssignment);
 };
