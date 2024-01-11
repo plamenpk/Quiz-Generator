@@ -30,11 +30,10 @@ interface SingleQuizCardProps {
     timeLimit: number | string;
     category: string;
     questions: Question[];
-    minPassingPoints: number | string;
-    maxPassingPoints: number | string;
+    minPassingPoints: number
+    maxPassingPoints: number
   };
 }
-
 
 const SingleQuizCard: React.FC<SingleQuizCardProps> = ({ quiz }) => {
 
@@ -74,44 +73,60 @@ const SingleQuizCard: React.FC<SingleQuizCardProps> = ({ quiz }) => {
   }, [quiz?.category]);
 
   const showTimer = appState?.userData?.assignedQuizzes ? Object.keys(appState?.userData?.assignedQuizzes).includes(quiz?.id) : false;
-  
+
   let timeLimit = 0;
   let score = 0;
+
   if (showTimer) {
-    timeLimit = Math.floor((appState?.userData?.assignedQuizzes[quiz?.id][1] - dateNow) / 1000);
+    const assignedQuizzes = appState?.userData?.assignedQuizzes;
+
+    if (assignedQuizzes && assignedQuizzes[quiz.id]) {
+      timeLimit = Math.floor((assignedQuizzes[quiz.id][1] - dateNow) / 1000);
+    }
   }
   const showScore = appState?.userData?.score ? Object.keys(appState?.userData?.score).includes(quiz?.title) : false;
+
   if (showScore) {
-    score = appState?.userData?.score[quiz?.title].score;
+    if (appState?.userData?.score) {
+      score = appState?.userData?.score[quiz?.title].score;
+    }
   }
 
   const rejectQuiz = (): void => {
 
-    updateUserScore(appState?.userData.username, quiz.id, quiz.title, score, quiz.category, [], quiz.maxPassingPoints, quiz.minPassingPoints)
-      .then(() => {
-        navigate(`/singleQuizView/${quiz?.id}`);
-        console.log('Quiz result saved successfully');
-      })
-      .catch((e) => toast.error(e));
+    if (appState?.userData) {
+      updateUserScore(appState?.userData.username, quiz.id, quiz.title, score, quiz.category, [], quiz.maxPassingPoints, quiz.minPassingPoints)
+        .then(() => {
+          navigate(`/singleQuizView/${quiz?.id}`);
+          console.log('Quiz result saved successfully');
+        })
+        .catch((e) => toast.error(e));
+    }
 
-    removeFromAssignments(appState?.userData.username, quiz.id)
-      .then(() => console.log('Quiz assignment updated successfully'))
-      .catch((e) => toast.error(e));
+    if (appState?.userData) {
+      removeFromAssignments(appState?.userData.username, quiz.id)
+        .then(() => console.log('Quiz assignment updated successfully'))
+        .catch((e) => toast.error(e));
+    }
 
-    removeAssignmentsFromQuiz(appState?.userData.username, quiz.id)
-      .then(() => console.log('Quiz assignment updated successfully'))
-      .catch((e) => toast.error(e));
+    if (appState?.userData) {
+      removeAssignmentsFromQuiz(appState?.userData.username, quiz.id)
+        .then(() => console.log('Quiz assignment updated successfully'))
+        .catch((e) => toast.error(e));
+    }
 
-    removeAssignmentsFromUser(appState?.userData.username, quiz.id)
-      .then(() => console.log('Quiz assignment updated successfully'))
-      .catch((e) => toast.error(e));
+    if (appState?.userData) {
+      removeAssignmentsFromUser(appState?.userData.username, quiz.id)
+        .then(() => console.log('Quiz assignment updated successfully'))
+        .catch((e) => toast.error(e));
+    }
   };
 
   const showSummary = appState?.userData?.score ? Object.keys(appState?.userData?.score).includes(quiz?.title) : false;
 
   return (
     <>
-      {quiz && <div className="mb-4 overflow-hidden rounded-lg shadow-xl border-indigo-300">
+      {quiz && appState?.userData?.username && <div className="mb-4 overflow-hidden rounded-lg shadow-xl border-indigo-300">
         <div className="relative">
           <img src={img} alt="" className="h-30 w-full" />
           <div className="absolute top-0 right-0 z-10">

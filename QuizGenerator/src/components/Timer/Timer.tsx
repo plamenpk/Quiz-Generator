@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { timeLimitInSeconds } from "../../common/helpers";
+import { timeLimitInSeconds } from '../../common/helpers';
 interface TimeLimitPorps {
   onTimerFinish:()=> void
   timeLimit: number
 }
 
-const Timer = ({ onTimerFinish, timeLimit }) => {
+const Timer: React.FC<TimeLimitPorps> = ({ onTimerFinish, timeLimit }) => {
   
   const [seconds, setSeconds] = useState(timeLimitInSeconds(timeLimit));
 
@@ -21,7 +21,7 @@ const Timer = ({ onTimerFinish, timeLimit }) => {
 
 
     return () => clearInterval(intervalId);
-  }, [seconds]);
+  }, [seconds, onTimerFinish]);
 
    const formattedTime = `${Math.floor(seconds / 60)
     .toString()
@@ -33,8 +33,5 @@ const Timer = ({ onTimerFinish, timeLimit }) => {
     </div>
   );
 };
-// Timer.propTypes = {
-//   onTimerFinish: PropTypes.func.isRequired,
-//   timeLimit: PropTypes.number.isRequired,
-// };
+
 export default Timer;

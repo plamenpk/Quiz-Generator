@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import 'firebase/database';
+// import 'firebase/database';
 // import { quizzesRef, } from '../../services/quiz.services';
 // import { onValue } from 'firebase/database';
 // import { dateFormat } from '../../../common/helpers';
@@ -9,8 +9,9 @@ import { getAllQuizzes } from '../../../services/quiz.services';
 import toast from 'react-hot-toast';
 import { Quiz } from '../../../common/interfaces';
 import Table from '../../../components/UI/Tables/Table';
+// import { quizzes } from '../../../common/constants';
 
-const QuizAssignments: React.FC = () => {
+const QuizAssignments = (): JSX.Element => {
 
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -28,8 +29,9 @@ const QuizAssignments: React.FC = () => {
       })
       .catch(toast.error);
   }, [searchTerm]);
-  
-   // const finalDate = (ob) => {
+  console.log(quizzes);
+
+  // const finalDate = (ob) => {
   //   const finalDate = Object.values(ob).map(arr => arr[1]);
   //   return Math.max(...finalDate);
   // };
@@ -49,8 +51,8 @@ const QuizAssignments: React.FC = () => {
         headCol3="Questions"
         headCol4="Assigned students"
         headCol5="Assign"
-        // img="\src\assets\IT.jpg"
-         />
+      // img="\src\assets\IT.jpg"
+      />
     </>
   );
 };

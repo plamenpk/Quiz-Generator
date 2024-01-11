@@ -1,4 +1,4 @@
-import { get, push, ref, remove, set, update } from 'firebase/database';
+import { ThenableReference, get, push, ref, remove, set, update } from 'firebase/database';
 import { database } from '../config/firebase-config';
 import { Question, QuizAssignmentsTypes } from '../common/interfaces';
 import { Quiz } from '../common/interfaces';
@@ -16,7 +16,8 @@ export const addQuiz = (
   minPassingPoints: number,
   maxPassingPoints: number
 ): Promise<void> => {
-  const newQuizRef = push(ref(database, 'quizzes'));
+  // const newQuizRef = push(ref(database, 'quizzes'));
+  const newQuizRef: ThenableReference = push(ref(database, 'quizzes'));
   const quizData = {
     id: newQuizRef.key,
     category,
@@ -30,7 +31,6 @@ export const addQuiz = (
     minPassingPoints,
     maxPassingPoints
   };
-
   // Add quiz to the quizzes collection
   return set(newQuizRef, quizData)
     .then(() => {
@@ -128,11 +128,13 @@ export const deleteQuiz = (id: string): Promise<void> => {
   return remove(ref(database, `quizzes/${id}`));
 };
 
-export const updateQuiz = (quizId: string, quiz): Promise<void> => {
+export const updateQuiz = async (quizId: string, quiz: Quiz): Promise<void> => {
   const pathQuestion = `quizzes/${quizId}`;
-  return update(ref(database), {
-    [pathQuestion]: quiz
-  }).catch((error) => {
+  try {
+    return await update(ref(database), {
+      [pathQuestion]: quiz
+    });
+  } catch (error) {
     console.error('Update failed:', error);
-  });
+  }
 };

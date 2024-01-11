@@ -1,5 +1,5 @@
 export interface UserData {
-  assignedQuizzes: string[]
+  assignedQuizzes: AssignedQuizzesTypes
   address: string
   createdOn: Date
   email: string
@@ -14,6 +14,9 @@ export interface UserData {
   score?: { [key: string]: UserScore }
 }
 
+export interface AssignedQuizzesTypes {
+  [key: string]: [number, number];
+}
 export interface UserScore {
   category: string
   id: string
@@ -43,7 +46,7 @@ export interface Question {
 }
 
 export interface Quiz {
-  assignedUsers?: string[]
+  assignedUsers?: QuizAssignmentsTypes[]
   id: string
   username: string
   title: string
@@ -52,8 +55,8 @@ export interface Quiz {
   timeLimit: number | string
   category: string
   questions: Question[]
-  minPassingPoints: number | string
-  maxPassingPoints: number | string
+  minPassingPoints: number
+  maxPassingPoints: number
   scoreBoard?: scoreBoard[]
 }
 export interface scoreBoard {
@@ -115,4 +118,8 @@ export interface UpdateUserScore {
     resolvedOn?: number;
     username?: string
   };
+}
+
+export interface AssignedUsersTypes{
+
 }
