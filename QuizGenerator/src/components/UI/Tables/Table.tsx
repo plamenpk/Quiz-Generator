@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { TableTypes } from '../../../../common/interfaces';
+import { TableTypes } from '../../../common/interfaces';
 
 const Table = ({ quizzes, searchTerm, setSearchTerm, headCol1, headCol2, headCol3, headCol4, headCol5 }: TableTypes): JSX.Element => {
 

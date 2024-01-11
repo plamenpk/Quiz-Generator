@@ -123,3 +123,16 @@ export const quizAssignments = (user: string, id: string, openFrom: number, open
   quizAssignment[`/users/${user}/assignedQuizzes/${id}`] = [openFrom, openTo];
   return update(ref(database), quizAssignment);
 };
+
+export const deleteQuiz = (id: string): Promise<void> => {
+  return remove(ref(database, `quizzes/${id}`));
+};
+
+export const updateQuiz = (quizId: string, quiz): Promise<void> => {
+  const pathQuestion = `quizzes/${quizId}`;
+  return update(ref(database), {
+    [pathQuestion]: quiz
+  }).catch((error) => {
+    console.error('Update failed:', error);
+  });
+};

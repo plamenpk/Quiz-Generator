@@ -46,10 +46,10 @@ const Home: React.FC = () => {
           >
             Welcome to{' '}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-orange-400">
-              Quiz
+              QuizGe
             </span>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-blue-400">
-              zle
+            nerator
             </span>
           </h1>
         </div>

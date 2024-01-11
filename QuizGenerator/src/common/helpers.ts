@@ -25,3 +25,5 @@ export const dateFormat = (timestamp: number): string => {
 };
 
 export const timeLimitInSeconds = (timeLimit: number): number => timeLimit * 60;
+
+export const totalScore = (arr): number => arr.reduce((sum, item) => sum + item.score, 0);

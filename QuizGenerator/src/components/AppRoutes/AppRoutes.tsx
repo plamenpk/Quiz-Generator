@@ -14,6 +14,8 @@ import AssignedQuizzes from '../../views/AssignedQuizzes/AssignedQuizzes';
 import FinishedQuizzes from '../../views/FinishedQuizzes/FinishedQuizzes';
 import QuizScoreboard from '../../views/QuizScoreboard/QuizScoreboard';
 import UserAnswers from '../../views/UserAnswers/UserAnswers';
+import Students from '../../views/Students/Students';
+import EditQuiz from '../../views/EditQuiz/EditQuiz';
 
 const AppRoutes: React.FC = () => {
   return (
@@ -31,6 +33,8 @@ const AppRoutes: React.FC = () => {
       <Route path="/finished-quizzes" element={<FinishedQuizzes />} />
       <Route path="/quiz-scoreboard/:id" element={<QuizScoreboard />} />
       <Route path="/user-answers/:id" element={<UserAnswers />} />
+      <Route path="/students" element={<Students />} />
+      <Route path="/edit-quiz" element={<EditQuiz />} />
     </Routes>
   );
 };

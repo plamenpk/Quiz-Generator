@@ -1,4 +1,4 @@
-import { get, query, set, ref, orderByChild, equalTo, update, type DataSnapshot } from 'firebase/database';
+import { get, query, set, ref, orderByChild, equalTo, update, remove, type DataSnapshot } from 'firebase/database';
 import { database } from '../config/firebase-config';
 import { CommentUserResultsTypes } from '../common/interfaces';
 
@@ -104,3 +104,10 @@ export const addCommentInUserResults = (username: string, quiz: string, index: n
 
   return update(ref(database), updateUserScore);
 };
+
+export const blockUser = (username: string, blockStatus: boolean): Promise<void> => {
+  return update(ref(database, `users/${username}`), {
+    isBlocked: blockStatus,
+  });
+};
+

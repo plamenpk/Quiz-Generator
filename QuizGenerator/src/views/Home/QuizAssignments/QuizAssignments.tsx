@@ -8,7 +8,7 @@ import { QUIZ_STATUS } from '../../../common/constants';
 import { getAllQuizzes } from '../../../services/quiz.services';
 import toast from 'react-hot-toast';
 import { Quiz } from '../../../common/interfaces';
-import Table from '../../../components/UI/Buttons/Tables/Table';
+import Table from '../../../components/UI/Tables/Table';
 
 const QuizAssignments: React.FC = () => {
 
