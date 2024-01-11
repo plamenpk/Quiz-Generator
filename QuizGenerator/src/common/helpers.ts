@@ -1,5 +1,6 @@
 import { get } from 'firebase/database';
 import { quizzesRef } from '../services/quiz.services';
+import { UserScore } from './interfaces';
 
 export const titleCheck = (title: string): void => {
   get(quizzesRef)
@@ -26,4 +27,4 @@ export const dateFormat = (timestamp: number): string => {
 
 export const timeLimitInSeconds = (timeLimit: number): number => timeLimit * 60;
 
-export const totalScore = (arr): number => arr.reduce((sum, item) => sum + item.score, 0);
+export const totalScore = (arr: UserScore[]): number => arr.reduce((sum: number, item) => sum + item.score, 0);

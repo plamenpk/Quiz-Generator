@@ -26,8 +26,8 @@ const AppRoutes: React.FC = () => {
       <Route path="/" element={<PublicView />} />
       <Route path="/profile" element={<AuthenticatedRoute><Profile /></AuthenticatedRoute>} />
       <Route path="/createQuiz" element={<CreateQuiz />} />
-      <Route path="/singleQuizView/:id" element={<SingleQuizView />} />
-      <Route path="/quizAssignments" element={<QuizAssignments />} />
+      <Route path="/single-quiz-view/:id" element={<SingleQuizView />} />
+      <Route path="/quiz-assignments" element={<QuizAssignments />} />
       <Route path="/assign-quiz/:id" element={<AssignQuiz />} />
       <Route path="/assigned-quizzes" element={<AssignedQuizzes />} />
       <Route path="/finished-quizzes" element={<FinishedQuizzes />} />

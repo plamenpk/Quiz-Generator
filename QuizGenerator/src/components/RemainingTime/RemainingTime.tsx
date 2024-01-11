@@ -6,9 +6,13 @@ import {
   removeAssignmentsFromQuiz,
   removeAssignmentsFromUser
 } from '../../services/quiz.services';
+import { RemainingTimeTypes } from '../../common/interfaces';
+import { SECONDS_IN_DAY } from '../../common/constants';
+import { SECONDS_IN_HOUR } from '../../common/constants';
+import { SECONDS_IN_MINUTE } from '../../common/constants';
 
-const RemainingTime: React.FC = ({ timeLimit, username, id, title, score, category }) => {
-  
+const RemainingTime: React.FC<RemainingTimeTypes> = ({ timeLimit, username, id, title, score, category }) => {
+
   const [seconds, setSeconds] = useState<number>(timeLimit + 86400);
 
   useEffect(() => {
@@ -38,10 +42,10 @@ const RemainingTime: React.FC = ({ timeLimit, username, id, title, score, catego
     return (): void => clearInterval(intervalId);
   }, [seconds, username, id, title, score, category]);
 
-  const days = Math.floor(seconds / 86400);
-  const hours = Math.floor((seconds % 86400) / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  const remainingSeconds = seconds % 60;
+  const days = Math.floor(seconds / SECONDS_IN_DAY);
+  const hours = Math.floor((seconds % SECONDS_IN_DAY) / SECONDS_IN_HOUR);
+  const minutes = Math.floor((seconds % SECONDS_IN_HOUR) / SECONDS_IN_MINUTE);
+  const remainingSeconds = seconds % SECONDS_IN_MINUTE;
 
   const formattedTime = `${days}d ${hours}h ${minutes}m ${remainingSeconds}s`;
 
@@ -52,14 +56,5 @@ const RemainingTime: React.FC = ({ timeLimit, username, id, title, score, catego
     </div>
   );
 };
-
-// RemainingTime.propTypes = {
-//   timeLimit: PropTypes.number.isRequired,
-//   username: PropTypes.string.isRequired,
-//   id: PropTypes.string.isRequired,
-//   title: PropTypes.string.isRequired,
-//   score: PropTypes.number.isRequired,
-//   category: PropTypes.string.isRequired,
-// };
 
 export default RemainingTime;

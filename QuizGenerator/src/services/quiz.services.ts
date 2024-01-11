@@ -10,11 +10,11 @@ export const addQuiz = (
   title: string,
   description: string,
   contestType: string,
-  timeLimit: number | string,
+  timeLimit: number,
   category: string,
   questions: Question[],
-  minPassingPoints: number | string,
-  maxPassingPoints: number | string
+  minPassingPoints: number,
+  maxPassingPoints: number
 ): Promise<void> => {
   const newQuizRef = push(ref(database, 'quizzes'));
   const quizData = {

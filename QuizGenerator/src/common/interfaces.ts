@@ -23,8 +23,6 @@ export interface UserScore {
   score: number
   title: string
   userAnswers: Answer[]
-
-
 }
 
 export interface ButtonType {
@@ -94,4 +92,27 @@ export interface TableTypes {
 
 export interface CommentUserResultsTypes {
   [key: string]: string
+}
+
+export interface RemainingTimeTypes {
+  timeLimit: number
+  username: string
+  id: string
+  title: string
+  score: number
+  category: string
+}
+
+export interface UpdateUserScore {
+  [key: string]: {
+    score?: number;
+    title?: string;
+    id?: string;
+    category?: string;
+    userAnswers?: string[];
+    maxPassingPoints?: number;
+    minPassingPoints?: number;
+    resolvedOn?: number;
+    username?: string
+  };
 }

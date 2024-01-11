@@ -1,6 +1,8 @@
-import { get, query, set, ref, orderByChild, equalTo, update, remove, type DataSnapshot } from 'firebase/database';
+import { get, query, set, ref, orderByChild, equalTo, update, type DataSnapshot } from 'firebase/database';
 import { database } from '../config/firebase-config';
 import { CommentUserResultsTypes } from '../common/interfaces';
+import { UpdateUserScore } from '../common/interfaces';
+import { UserData } from '../common/interfaces';
 
 export const getUserByHandle = async (handle: string): Promise<DataSnapshot> => {
   return await get(ref(database, `users/${handle}`));
@@ -58,16 +60,17 @@ export const updateUserData = (
   });
 };
 
-export const updateUserScore = (username: string,
+export const updateUserScore = (
+  username: string,
   quizId: string,
   title: string,
   score: number,
   category: string,
   userAnswers: string[],
-  maxPassingPoints: number,
-  minPassingPoints: number
+  maxPassingPoints?: number,
+  minPassingPoints?: number
 ): Promise<void> => {
-  const updateUserScore = {};
+  const updateUserScore: UpdateUserScore = {};
   updateUserScore[`/users/${username}/score/${title}`] = { score, title, id: `${quizId}`, category, userAnswers, maxPassingPoints, minPassingPoints, resolvedOn: Date.now(), };
   updateUserScore[`/quizzes/${quizId}/scoreBoard/${username}`] = { username, score };
 
@@ -78,14 +81,13 @@ export const getAllUsers = (): Promise<DataSnapshot> => {
   return get(ref(database, 'users'));
 };
 
-export const searchUser = (searchTerm: string): Promise<DataSnapshot> => {
+export const searchUser = (searchTerm: string): Promise<UserData[]> => {
   return get(ref(database, 'users')).then((snapshot) => {
     if (!snapshot.exists()) {
       throw new Error(`User with searchTerm ${searchTerm} does not exist!`);
     }
     const users = snapshot.val();
     const filteredUsers = Object.keys(users)
-
       .filter(
         (key) =>
           (users[key]?.username && users[key].username.includes(searchTerm)) ||
@@ -110,4 +112,3 @@ export const blockUser = (username: string, blockStatus: boolean): Promise<void>
     isBlocked: blockStatus,
   });
 };
-

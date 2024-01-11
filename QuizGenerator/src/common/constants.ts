@@ -4,6 +4,9 @@ export const MAX_NAME_LENGTH = 20;
 export const MIN_USER_NAME_LENGTH = 3;
 export const PHONE_NUMBER_CHECK = /^\d{10}$/;
 export const NAME_CHECK = /^[A-Z][a-z]*$/;
+export const SECONDS_IN_DAY = 86400;
+export const SECONDS_IN_HOUR = 3600;
+export const SECONDS_IN_MINUTE = 60; 
 
 export const ROLE_CHECK = {
   ADMIN: 'admin',

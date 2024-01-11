@@ -49,12 +49,12 @@ const Home: React.FC = () => {
               QuizGe
             </span>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-blue-400">
-            nerator
+              nerator
             </span>
           </h1>
         </div>
       </div>
-      <CardContainer quizzes={quizzes}/>
+      <CardContainer quizzes={quizzes} />
     </>
   );
 };

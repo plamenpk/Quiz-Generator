@@ -61,7 +61,7 @@ const SingleQuizCard: React.FC<SingleQuizCardProps> = ({ quiz }) => {
         case CATEGORIES.ASTRONOMY:
           setImg(astro);
           break;
-          case CATEGORIES.GEOGRAPHY:
+        case CATEGORIES.GEOGRAPHY:
           setImg(geography);
           break;
         default:
@@ -74,6 +74,7 @@ const SingleQuizCard: React.FC<SingleQuizCardProps> = ({ quiz }) => {
   }, [quiz?.category]);
 
   const showTimer = appState?.userData?.assignedQuizzes ? Object.keys(appState?.userData?.assignedQuizzes).includes(quiz?.id) : false;
+  
   let timeLimit = 0;
   let score = 0;
   if (showTimer) {
@@ -144,7 +145,7 @@ const SingleQuizCard: React.FC<SingleQuizCardProps> = ({ quiz }) => {
           </p>
           <div className="flex justify-center space-x-4">
             {!showSummary && <Link
-              to={`/singleQuizView/${quiz?.id}`}
+              to={`/single-quiz-view/${quiz?.id}`}
               className="rounded-sm px-3 py-2 bg-blue-500 hover:bg-blue-700 text-base text-white dark:text-zinc-200 shadow-sm  dark:hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 hover:scale-105"
             >
               Enroll
@@ -157,13 +158,13 @@ const SingleQuizCard: React.FC<SingleQuizCardProps> = ({ quiz }) => {
               Reject
             </button>}
             {showSummary && <Link
-              to={`/singleQuizView/${quiz?.id}`}
+              to={`/single-quiz-view/${quiz?.id}`}
               className="rounded-sm px-3 py-2 bg-blue-500 hover:bg-blue-700 text-base text-white dark:text-zinc-200 shadow-sm  dark:hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 hover:scale-105"
             >
               Summary
             </Link>}
             <Link
-              to={`/singleQuizScoreboard/${quiz?.id}`}
+              to={`/quiz-scoreboard/${quiz?.id}`}
               className="rounded-sm px-3 py-2 bg-blue-500 hover:bg-blue-700 text-base text-white dark:text-zinc-200 shadow-sm  dark:hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 hover:scale-105"
             >
               Scoreboard

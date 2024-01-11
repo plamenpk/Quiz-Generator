@@ -1,13 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
-const Footer = () => {
+const Footer: React.FC = () => {
   return (
     <>
       <footer className="relative bottom-0 left-0 z-10 w-full p-4  dark:bg-gradient-to-r dark:from-zinc-500 shadow md:flex md:items-center md:justify-between md:p-2">
         <span className="text-md  text-black sm:text-center dark:text-zinc-200">
-          Copyright © 2023 by {" "}
+          Copyright © 2024 by {' '}
           <a href="http://localhost:5173/" className="hover:underline">
-            Quiz™
+            QuizGenerator™
           </a>
           . All Rights Reserved.
         </span>
