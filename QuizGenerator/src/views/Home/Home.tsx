@@ -1,4 +1,3 @@
-import React from 'react';
 import CardContainer from '../../components/CardContainer/CardContainer';
 import { useContext, useEffect, useState } from 'react';
 import { getAllQuizzes } from '../../services/quiz.services';
@@ -15,8 +14,8 @@ const Home: React.FC = () => {
   useEffect(() => {
     getAllQuizzes()
       .then((snapshot) => {
-        const invitationalQuizzes = snapshot.filter(quiz => quiz.contestType === QUIZ_STATUS.OPEN);
-        setQuizzes(invitationalQuizzes);
+        const publicQuizzes = snapshot.filter(quiz => quiz.contestType === QUIZ_STATUS.OPEN);
+        setQuizzes(publicQuizzes);
       })
       .catch((e) => toast.error(e));
 
@@ -35,7 +34,7 @@ const Home: React.FC = () => {
         : [];
     setQuizzes(filteredQuizzes);
   }
-
+console.log(quizzes);
   return (
     <>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-14 rounded-lg">

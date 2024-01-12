@@ -4,16 +4,17 @@ import { getAllUsers } from '../../services/users.services';
 import { quizAssignments, getQuizById } from '../../services/quiz.services';
 import toast from 'react-hot-toast';
 import { searchUser } from '../../services/users.services';
+import { Quiz, QuizAssignmentsTypes, UserData } from '../../common/interfaces';
 
 
-const AssignQuiz:React.FC = () => {
+const AssignQuiz: React.FC = () => {
 
   const { id } = useParams();
   const [date, setDate] = useState('');
   const [finalDate, setFinalDate] = useState('');
-  const [users, setUsers] = useState([]);
-  const [quiz, setQuiz] = useState('');
-  const [assignedUsers, setAssignedUsers] = useState([]);
+  const [users, setUsers] = useState<UserData[]>([]);
+  const [quiz, setQuiz] = useState<Quiz>({} as Quiz);
+  const [assignedUsers, setAssignedUsers] = useState<QuizAssignmentsTypes>({} as QuizAssignmentsTypes);
   const [index, setIndex] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,18 +27,20 @@ const AssignQuiz:React.FC = () => {
         setUsers(Object.values(snapshot.val()));
       })
       .catch(e => toast.error(e));
-  }, []);
+    // console.log(users);
+  }, [users]);
 
   useEffect(() => {
-    if(id){
-    getQuizById(id)
-      .then(snapshot => {
-        snapshot.assignedUsers ?
-          setAssignedUsers(Object.keys(snapshot.assignedUsers))
-          : assignedUsers;
-        setQuiz(snapshot);
-      })
-      .catch(e => toast.error(e));
+    if (id) {
+      getQuizById(id)
+        .then(snapshot => {
+          snapshot.assignedUsers ?
+            setAssignedUsers(Object.keys(snapshot.assignedUsers))
+            : assignedUsers;
+          setQuiz(snapshot);
+          // console.log(assignedUsers);
+        })
+        .catch(e => toast.error(e));
     }
   }, [id, assignedUsers]);
 
@@ -68,7 +71,7 @@ const AssignQuiz:React.FC = () => {
 
   useEffect(() => {
     searchUser('')
-    .then(setResult)
+      .then(setResult)
     const timer = setInterval(() => {
       setIndex((prevIndex) => prevIndex + 1);
     }, 90);
@@ -156,7 +159,7 @@ const AssignQuiz:React.FC = () => {
                             Object.values(user.score).map((quiz) => quiz.id).includes(id)
                               ? <div >Resolved</div>
                               : <button onClick={() => assignQuizHandler(user.username)}>Assign</button>}
-                              {/* <button onClick={() => assignQuizHandler(user.username)}>Assign</button> */}
+                        {/* <button onClick={() => assignQuizHandler(user.username)}>Assign</button> */}
                       </td>
                     </tr>
                   ))

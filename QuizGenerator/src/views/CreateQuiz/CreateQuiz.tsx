@@ -13,9 +13,9 @@ const CreateQuiz: React.FC = () => {
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [contestType, setContestType] = useState('open');
-  const [timeLimit, setTimeLimit] = useState<number | string>(30);
-  const [totalPoints, setTotalPoints] = useState<number | string>(100);
-  const [miniPassingPoints, setMiniPassingPoints] = useState<number | string>(50);
+  const [timeLimit, setTimeLimit] = useState(1);
+  const [totalPoints, setTotalPoints] = useState<number>(100);
+  const [miniPassingPoints, setMiniPassingPoints] = useState<number>(50);
   const [questions, setQuestions] = useState<Question[]>([
     { question: '', answers: [{ text: '', isCorrect: false }] },
   ]);
@@ -158,7 +158,7 @@ const CreateQuiz: React.FC = () => {
                     <input className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                       type="number"
                       value={timeLimit}
-                      onChange={(e) => setTimeLimit(e.target.value)}
+                      onChange={(e) => setTimeLimit(parseInt(e.target.value, 10))}
                       required
                     />
                   </div>
@@ -167,7 +167,7 @@ const CreateQuiz: React.FC = () => {
                     <input className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                       type="number"
                       value={totalPoints}
-                      onChange={(e) => setTotalPoints(e.target.value)}
+                      onChange={(e) => setTotalPoints(parseInt(e.target.value, 10))}
                       required
                     />
                   </div>
@@ -176,7 +176,7 @@ const CreateQuiz: React.FC = () => {
                     <input className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                       type="number"
                       value={miniPassingPoints}
-                      onChange={(e) => setMiniPassingPoints(e.target.value)}
+                      onChange={(e) => setMiniPassingPoints(parseInt(e.target.value, 10))}
                       required
                     />
                   </div>
