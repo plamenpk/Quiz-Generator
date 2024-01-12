@@ -48,6 +48,7 @@ export interface Question {
 export interface Quiz {
   assignedUsers?: QuizAssignmentsTypes[]
   id: string
+  createdOn: number
   username: string
   title: string
   description: string
