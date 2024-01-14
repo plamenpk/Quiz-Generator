@@ -1,21 +1,14 @@
 import { useState, useEffect } from 'react';
-// import 'firebase/database';
-// import { quizzesRef, } from '../../services/quiz.services';
-// import { onValue } from 'firebase/database';
-// import { dateFormat } from '../../../common/helpers';
-// import { dateNow } from '../../../common/constants';
 import { QUIZ_STATUS } from '../../../common/constants';
 import { getAllQuizzes } from '../../../services/quiz.services';
 import toast from 'react-hot-toast';
 import { Quiz } from '../../../common/interfaces';
 import Table from '../../../components/UI/Tables/Table';
-// import { quizzes } from '../../../common/constants';
 
 const QuizAssignments = (): JSX.Element => {
 
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  // const [finishedQuizzes, setFinishedQuizzes] = useState(true);
 
   useEffect(() => {
     getAllQuizzes()
@@ -29,16 +22,6 @@ const QuizAssignments = (): JSX.Element => {
       })
       .catch(toast.error);
   }, [searchTerm]);
-  console.log(quizzes);
-
-  // const finalDate = (ob) => {
-  //   const finalDate = Object.values(ob).map(arr => arr[1]);
-  //   return Math.max(...finalDate);
-  // };
-
-  // const openQuizzes = finishedQuizzes
-  //   ? quizzes.filter(quiz => quiz.assignedUsers === undefined || finalDate(quiz.assignedUsers) > dateNow)
-  //   : quizzes.filter(quiz => quiz.scoreBoard !== undefined);
 
   return (
     <>

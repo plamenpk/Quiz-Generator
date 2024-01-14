@@ -3,32 +3,38 @@ import { useEffect, useState } from 'react';
 import { getAllUsers } from '../../services/users.services';
 import { quizAssignments, getQuizById } from '../../services/quiz.services';
 import toast from 'react-hot-toast';
-import { searchUser } from '../../services/users.services';
-import { Quiz, QuizAssignmentsTypes, UserData } from '../../common/interfaces';
+// import { searchUser } from '../../services/users.services';
+import { Quiz, UserData } from '../../common/interfaces';
 
 
 const AssignQuiz: React.FC = () => {
 
   const { id } = useParams();
-  const [date, setDate] = useState('');
-  const [finalDate, setFinalDate] = useState('');
+  const [date, setDate] = useState<string>('');
+  const [finalDate, setFinalDate] = useState<string>('');
   const [users, setUsers] = useState<UserData[]>([]);
   const [quiz, setQuiz] = useState<Quiz>({} as Quiz);
-  const [assignedUsers, setAssignedUsers] = useState<QuizAssignmentsTypes>({} as QuizAssignmentsTypes);
-  const [index, setIndex] = useState(0);
+  const [assignedUsers, setAssignedUsers] = useState<string[]>([]);
+  // const [index, setIndex] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(10);
-  const [result, setResult] = useState([]);
+  // const [result, setResult] = useState([]);
 
   useEffect(() => {
     getAllUsers()
       .then(snapshot => {
-        setUsers(Object.values(snapshot.val()));
+        const filteredUsers = Object.values(snapshot.val() as Record<string, UserData>).filter(
+          (user) =>
+            (user as UserData).username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            (user as UserData).firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            (user as UserData).lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            (user as UserData).email.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setUsers(filteredUsers);
       })
       .catch(e => toast.error(e));
-    // console.log(users);
-  }, [users]);
+  }, [users, searchTerm]);
 
   useEffect(() => {
     if (id) {
@@ -38,60 +44,36 @@ const AssignQuiz: React.FC = () => {
             setAssignedUsers(Object.keys(snapshot.assignedUsers))
             : assignedUsers;
           setQuiz(snapshot);
-          // console.log(assignedUsers);
         })
         .catch(e => toast.error(e));
     }
   }, [id, assignedUsers]);
 
-  const assignQuizHandler = (user) => {
+  const assignQuizHandler = (user: string): void => {
 
     const chosenDate = new Date(date);
     const dateInSeconds = chosenDate.getTime();
     const chosenFinalDate = new Date(finalDate);
     const finalDateInSeconds = chosenFinalDate.getTime();
-    if (dateInSeconds === '' || finalDateInSeconds === '') {
-      toast.error('date and finalDate can\'t be empty');
+    if (Number.isNaN(dateInSeconds) || Number.isNaN(finalDateInSeconds)) {
+      toast.error('date or finalDate can\'t be empty');
       return;
     }
 
-    if (!dateInSeconds) {
-      toast.error('date and finalDate cant\'be empty');
+    if (id) {
+      quizAssignments(user, id, dateInSeconds, finalDateInSeconds)
+        .then(() => {
+          toast.success('quiz assigned successfully');
+        })
+        .catch(e => console.error(e));
     }
-    if (!finalDateInSeconds) {
-      toast.error('date and finalDate cant\'be empty');
-    }
-
-    quizAssignments(user, id, dateInSeconds, finalDateInSeconds)
-      .then(() => {
-        toast.success('quiz assigned successfully');
-      })
-      .catch(e => console.error(e));
   };
-
-  useEffect(() => {
-    searchUser('')
-      .then(setResult)
-    const timer = setInterval(() => {
-      setIndex((prevIndex) => prevIndex + 1);
-    }, 90);
-
-    return () => clearInterval(timer);
-  }, [setResult]);
-
-  const filteredUsers = result.filter(
-    (user) =>
-      user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+  // const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber: number): void => setCurrentPage(pageNumber);
 
   return (
     <>
@@ -125,7 +107,7 @@ const AssignQuiz: React.FC = () => {
             />
           </div>
           <div className="mt-4 ">
-            <table className="table-auto rounded text-black w-full text-center text-white dark:text-zinc-200">
+            <table className="table-auto rounded text-black w-full text-center dark:text-zinc-200">
               <thead className=" text-lg border text-black dark:bg-gradient-to-br dark:from-zinc-600">
                 <tr>
                   <th className=" px-4 py-2 text-black">Username</th>
@@ -136,30 +118,32 @@ const AssignQuiz: React.FC = () => {
                 </tr>
               </thead>
 
-              <tbody className=" text-lg text-black">
-                {filteredUsers.length > 0 ? (
-                  filteredUsers.map((user) => (
+              {id && <tbody className=" text-lg text-black">
+                {users.length > 0 ? (
+                  users.map((user) => (
                     <tr key={user.uid} className="border dark:bg-gradient-to-br dark:from-zinc-800">
-                      <td className=" px-4 py-2">{user.username}</td>
-                      <td className=" px-4 py-2">{user.lastName}</td>
-                      <td className=" px-4 py-2"></td>
-                      <td className=" px-4 py-2">
-                        {user.score ? Object.values(user?.score).find(item => item.id === `${id}`)
-                          ? Object.values(user?.score).find(item => item.id === `${id}`).score : 0 : 0
-                        }</td>
-                      <td className=" px-4 py-2">
+                      <td className="px-4 py-2">{user.username}</td>
+                      <td className="px-4 py-2">{user.lastName}</td>
+                      <td className="px-4 py-2"></td>
+                      <td className="px-4 py-2">
+                        {user.score
+                          ? Object.values(user.score).find((item) => item.id === `${id}`)?.score || 0
+                          : 0}
+                      </td>
+                      <td className="px-4 py-2">
                         {assignedUsers.length > 0
                           ? assignedUsers.includes(user.username)
                             ? <div className="px-1 py-1">Assigned</div>
-                            : !user?.score ? <button onClick={() => assignQuizHandler(user.username)}>Assign</button> :
-                              Object.values(user.score).map((quiz) => quiz.id).includes(id)
-                                ? <div >Resolved</div>
+                            : !user?.score
+                              ? <button onClick={() => assignQuizHandler(user.username)}>Assign</button>
+                              : Object.values(user.score).map((quiz) => quiz.id).includes(id)
+                                ? <div>Resolved</div>
                                 : <button onClick={() => assignQuizHandler(user.username)}>Assign</button>
-                          : !user?.score ? <button onClick={() => assignQuizHandler(user.username)}>Assign</button> :
-                            Object.values(user.score).map((quiz) => quiz.id).includes(id)
-                              ? <div >Resolved</div>
+                          : !user?.score
+                            ? <button onClick={() => assignQuizHandler(user.username)}>Assign</button>
+                            : Object.values(user.score).map((quiz) => quiz.id).includes(id)
+                              ? <div>Resolved</div>
                               : <button onClick={() => assignQuizHandler(user.username)}>Assign</button>}
-                        {/* <button onClick={() => assignQuizHandler(user.username)}>Assign</button> */}
                       </td>
                     </tr>
                   ))
@@ -168,7 +152,7 @@ const AssignQuiz: React.FC = () => {
                     <td colSpan={5} className="text-center py-4 text-2xl">No results found</td>
                   </tr>
                 )}
-              </tbody>
+              </tbody>}
             </table>
           </div>
           <div className="flex justify-between items-center mt-4">

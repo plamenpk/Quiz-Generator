@@ -1,54 +1,56 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getQuizById } from '../../services/quiz.services';
 import toast from 'react-hot-toast';
 import { addCommentInUserResults } from '../../services/users.services';
 import { onValue, ref } from 'firebase/database';
 import { database } from '../../config/firebase-config';
+import { Answer, Quiz } from '../../common/interfaces';
 
 
 const UserAnswers: React.FC = () => {
 
   const { id } = useParams();
-  const [quiz, setQuiz] = useState(null);
+  const [quiz, setQuiz] = useState<Quiz>();
   const [user, setUser] = useState(null);
   const [showInput, setShowInput] = useState(false);
   const [comment, setComment] = useState('');
-  const [quizId, username] = id.split('--');
-  const [answers, setAnswers] = useState(null);
-  const navigate = useNavigate();
+  const [answers, setAnswers] = useState<Answer>();
+
 
   useEffect(() => {
-    getQuizById(quizId)
-      .then((fetchedQuiz) => {
-        setQuiz(fetchedQuiz);
-      })
-      .catch((error) => {
-        toast.error('Error fetching quiz details:', error);
-        setQuiz(null);
+    if (id) {
+      const [quizId, username] = id.split('--');
+      getQuizById(quizId)
+        .then((fetchedQuiz) => {
+          setQuiz(fetchedQuiz);
+        })
+        .catch((error) => {
+          toast.error('Error fetching quiz details:', error);
+        });
+
+      const dbRef = ref(database, `users/${username}`);
+      const unsubscribe = onValue(dbRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          setUser(data);
+        }
       });
 
-    const dbRef = ref(database, `users/${username}`);
-    const unsubscribe = onValue(dbRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        setUser(data);
-      }
-    });
+      return () => {
+        unsubscribe();
+      };
+    }
 
-    return () => {
-      unsubscribe();
-    };
-  }, [quizId, username]);
+  }, [id]);
 
-  const addCommentHandler = (answers) => {
+  const addCommentHandler = (answers: Answer): void => {
     setShowInput(!showInput);
     setAnswers(answers);
   };
 
-  const saveComment = (user, quiz) => {
+  const saveComment = (user: string, quiz: string): void => {
     addCommentInUserResults(user, quiz, answers, comment);
-    // navigate(0)
   };
 
   return (
@@ -78,9 +80,10 @@ const UserAnswers: React.FC = () => {
                       <th className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         <p className="block text-lg">{quest.question}</p>
                         <div className="relative p-2">
-                          <p className="block text-left">Correct answer: {quest.answers.find(item => item.isCorrect === true)
-                            ? quest.answers.find(item => item.isCorrect === true).text
-                            : null}
+                          <p className="block text-left">Correct answer:
+                            {quest.answers.find(item => item.isCorrect === true)
+                              ? quest.answers.find(item => item.isCorrect === true).text
+                              : null}
                           </p>
                           <p className="block text-left">Your answer:  {
                             user?.score[quiz?.title].userAnswers
@@ -108,9 +111,8 @@ const UserAnswers: React.FC = () => {
                         <div className="bg-indigo-100 py-6 px-32 items-center justify-end rounded text-black">
                           <textarea
                             placeholder="Add comment here..."
-                            rows="8"
+                            rows={8}
                             className="rounded-lg w-full py-6 px-6 bg-indigo-100 mt-2 -py focus-within:border-blue-500 focus:outline-none"
-                            type="password"
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
                           />

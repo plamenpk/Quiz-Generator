@@ -97,8 +97,14 @@ const SingleQuizCard: React.FC<SingleQuizCardProps> = ({ quiz }) => {
     if (appState?.userData) {
       updateUserScore(appState?.userData.username, quiz.id, quiz.title, score, quiz.category, [], quiz.maxPassingPoints, quiz.minPassingPoints)
         .then(() => {
-          navigate(`/singleQuizView/${quiz?.id}`);
+         
           console.log('Quiz result saved successfully');
+          console.log(Date.now());
+          
+        })
+        .then(() => {
+          navigate(`/single-quiz-view/${quiz?.id}`);
+          
         })
         .catch((e) => toast.error(e));
     }

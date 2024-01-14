@@ -45,8 +45,10 @@ const SingleQuizView: React.FC = () => {
         });
     }
   }, [id]);
+
   useEffect(() => {
     if (appState?.userData?.score) {
+     
       setIsQuizResolved(Object.values(appState?.userData?.score).map(el => el.id).includes(id));
     }
   }, [id, appState?.userData?.score]);
@@ -69,6 +71,7 @@ const SingleQuizView: React.FC = () => {
   };
 
   useEffect(() => {
+  
     if (userAnswers[activeQuestionIndex - 1]?.isCorrect) {
       setScore((score) => score + 1);
     }
@@ -82,8 +85,8 @@ const SingleQuizView: React.FC = () => {
 
     if (quiz?.contestType === QUIZ_STATUS.INVITATIONAL) {
 
-      const resolvedOn = Object.values(userData?.score).find(el => el.id === id).resolvedOn;
-      const scorePoints = Object.values(userData?.score).find(el => el.id === id).score;
+      const resolvedOn = Object.values(appState?.userData?.score).find(el => el.id === id).resolvedOn;
+      const scorePoints = Object.values(appState?.userData?.score).find(el => el.id === id).score;
 
       return <QuizResolved id={id} score={scorePoints} title={quiz?.title} category={quiz?.category} userAnswers={userAnswers} resolvedOn={resolvedOn} />;
     }

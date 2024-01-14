@@ -36,8 +36,10 @@ export interface ButtonType {
 
 export interface Answer {
   length?: number
-  text: string;
-  isCorrect: boolean;
+  text: string
+  isCorrect: boolean
+  comment?: string
+
 }
 
 export interface Question {
@@ -121,6 +123,8 @@ export interface UpdateUserScore {
   };
 }
 
-export interface AssignedUsersTypes{
-
+export interface QuizResolvedTypes {
+  id: string
+  score: number
+  resolvedOn: number
 }
