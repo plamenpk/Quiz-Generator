@@ -3,11 +3,12 @@ import { getQuizById } from '../../services/quiz.services';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
+import { Quiz } from '../../common/interfaces';
 
 const QuizScoreboard: React.FC = () => {
 
   const { id } = useParams();
-  const [quiz, setQuiz] = useState();
+  const [quiz, setQuiz] = useState<Quiz>();
   useEffect(() => {
     if (id) {
       getQuizById(id)

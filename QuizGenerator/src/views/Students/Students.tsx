@@ -3,11 +3,12 @@ import { blockUser, searchUser } from '../../services/users.services';
 import { ROLE_CHECK } from '../../common/constants';
 import { AuthContext } from '../../context/AuthContext';
 import { totalScore } from '../../common/helpers';
+import { UserData } from '../../common/interfaces';
 
 const Students: React.FC = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<UserData[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [blockedUsers, setBlockedUsers] = useState({});
+  // const [blockedUsers, setBlockedUsers] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(10);
   const { appState } = useContext(AuthContext);
@@ -24,13 +25,13 @@ const Students: React.FC = () => {
     return () => clearInterval(timer);
   }, [setUsers]);
 
-  const handleBlockUser = (username, blockStatus) => {
+  const handleBlockUser = (username: string, blockStatus: boolean): void => {
     const newBlockStatus = !blockStatus;
 
-    setBlockedUsers((prevState) => ({
-      ...prevState,
-      [username]: newBlockStatus,
-    }));
+    // setBlockedUsers((prevState) => ({
+    //   ...prevState,
+    //   [username]: newBlockStatus,
+    // }));
 
     blockUser(username, newBlockStatus).then(() => {
       setUsers((prevUsers) =>
@@ -53,9 +54,9 @@ const Students: React.FC = () => {
 
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+  // const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber: number): void => setCurrentPage(pageNumber);
 
   return (
     <div className="pb-20 overflow-auto">
@@ -143,7 +144,7 @@ const Students: React.FC = () => {
                 )
               ) : (
                 <tr>
-                  <td colSpan="4" className="text-center py-4 text-2xl">No results found</td>
+                  <td colSpan={4} className="text-center py-4 text-2xl">No results found</td>
                 </tr>
               )
               }

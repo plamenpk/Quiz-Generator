@@ -5,17 +5,17 @@ import toast from 'react-hot-toast';
 import { addCommentInUserResults } from '../../services/users.services';
 import { onValue, ref } from 'firebase/database';
 import { database } from '../../config/firebase-config';
-import { Answer, Quiz } from '../../common/interfaces';
+import { Quiz, UserData } from '../../common/interfaces';
 
 
 const UserAnswers: React.FC = () => {
 
   const { id } = useParams();
   const [quiz, setQuiz] = useState<Quiz>();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<UserData>();
   const [showInput, setShowInput] = useState(false);
   const [comment, setComment] = useState('');
-  const [answers, setAnswers] = useState<Answer>();
+  const [answers, setAnswers] = useState<number>();
 
 
   useEffect(() => {
@@ -44,18 +44,18 @@ const UserAnswers: React.FC = () => {
 
   }, [id]);
 
-  const addCommentHandler = (answers: Answer): void => {
+  const addCommentHandler = (answers: number): void => {
     setShowInput(!showInput);
     setAnswers(answers);
   };
 
   const saveComment = (user: string, quiz: string): void => {
-    addCommentInUserResults(user, quiz, answers, comment);
+    if (answers) { addCommentInUserResults(user, quiz, answers, comment); }
   };
 
   return (
     <>
-      {quiz && <div className="ml-4 mt-4">
+      {quiz && user && <div className="ml-4 mt-4">
         <div className="pb-20 overflow-auto">
           <div className="flex flex-col items-center">
             <p className="pt-12 text-3xl font-extrabold bg-clip-text p-1 text-transparent bg-gradient-to-r from-zinc-700 to-gray-500 dark:bg-gradient-to-r dark:from-zinc-300 dark:to-gray-500">
@@ -81,19 +81,19 @@ const UserAnswers: React.FC = () => {
                         <p className="block text-lg">{quest.question}</p>
                         <div className="relative p-2">
                           <p className="block text-left">Correct answer:
-                            {quest.answers.find(item => item.isCorrect === true)
-                              ? quest.answers.find(item => item.isCorrect === true).text
+                            {quest.answers && quest.answers.find(item => item.isCorrect === true)
+                              ? quest.answers.find(item => item.isCorrect === true)?.text
                               : null}
                           </p>
                           <p className="block text-left">Your answer:  {
-                            user?.score[quiz?.title].userAnswers
+                            user?.score && user?.score[quiz?.title].userAnswers
                               ? user?.score[quiz?.title].userAnswers[i]
                                 ? user?.score[quiz?.title].userAnswers[i].text
                                 : '...'
                               : '...'
                           }</p>
                           {
-                            user?.score[quiz?.title].userAnswers
+                            user?.score && user?.score[quiz?.title].userAnswers
                             && user?.score[quiz?.title].userAnswers[i]
                             && user?.score[quiz?.title].userAnswers[i].comment
                             && <p className="block text-left"> Comment: {user?.score[quiz?.title].userAnswers[i].comment}</p>}

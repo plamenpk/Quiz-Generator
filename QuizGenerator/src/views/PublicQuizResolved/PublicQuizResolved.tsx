@@ -12,13 +12,15 @@ const PublicQuizResolved: React.FC<PublicQuizResolvedPropsTypes> = ({ id, score,
   const [quiz, setQuiz] = useState<Quiz>();
 
   useEffect(() => {
-    getQuizById(id)
+    if (id) {
+      getQuizById(id)
       .then((fetchedQuiz) => {
         setQuiz(fetchedQuiz);
       })
       .catch((error) => {
         toast.error('Error fetching quiz details:', error);
       });
+    }
   }, [id]);
 
   return (
@@ -60,13 +62,13 @@ const PublicQuizResolved: React.FC<PublicQuizResolvedPropsTypes> = ({ id, score,
                         </p>
                         <div>
                           Your response: <span className="text-base font-medium">{'  '}
-                          {
-                            userAnswers
-                              ? userAnswers[i]
-                                ? userAnswers[i].text
+                            {
+                              userAnswers
+                                ? userAnswers[i]
+                                  ? userAnswers[i].text
+                                  : '...'
                                 : '...'
-                              : '...'
-                          }</span>
+                            }</span>
                         </div>
                       </div>
                     </div>

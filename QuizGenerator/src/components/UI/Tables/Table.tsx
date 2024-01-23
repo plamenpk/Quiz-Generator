@@ -9,7 +9,7 @@ const Table = ({ quizzes, searchTerm, setSearchTerm, headCol1, headCol2, headCol
         <div className="mx-auto max-w-screen-2xl lg:px-12">
           <div className="relative overflow-hidden bg-white shadow-md dark:bg-blue-300 opacity-80 sm:rounded-lg mb-20">
             <div className="overflow-x-auto">
-              <div className="w-full pl-4 bg-blue-500 text-white  text-left text-gray-500 dark:text-gray-400">
+              <div className="w-full pl-4 bg-blue-500 text-white  text-left dark:text-gray-400">
                 <h1 className="mb-3 text-5xl bg-clip-text dark:text-zinc-300">Quizzes</h1>
                 <input
                   type="text"
