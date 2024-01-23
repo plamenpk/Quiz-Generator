@@ -51,11 +51,12 @@ export interface Quiz {
   assignedUsers?: QuizAssignmentsTypes[]
   id: string
   createdOn: number
+  createdBy: string
   username: string
   title: string
   description: string
   contestType: string
-  timeLimit: number | string
+  timeLimit: number
   category: string
   questions: Question[]
   minPassingPoints: number
@@ -115,7 +116,7 @@ export interface UpdateUserScore {
     title?: string;
     id?: string;
     category?: string;
-    userAnswers?: string[];
+    userAnswers?: Answer[];
     maxPassingPoints?: number;
     minPassingPoints?: number;
     resolvedOn?: number;
@@ -127,4 +128,7 @@ export interface QuizResolvedTypes {
   id: string
   score: number
   resolvedOn: number
+  title?: string
+  category?: string
+  userAnswers?: Answer[]
 }

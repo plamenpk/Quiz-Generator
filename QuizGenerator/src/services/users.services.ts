@@ -1,6 +1,6 @@
 import { get, query, set, ref, orderByChild, equalTo, update, type DataSnapshot } from 'firebase/database';
 import { database } from '../config/firebase-config';
-import { CommentUserResultsTypes } from '../common/interfaces';
+import { Answer, CommentUserResultsTypes } from '../common/interfaces';
 import { UpdateUserScore } from '../common/interfaces';
 import { UserData } from '../common/interfaces';
 
@@ -66,7 +66,7 @@ export const updateUserScore = (
   title: string,
   score: number,
   category: string,
-  userAnswers: string[],
+  userAnswers: Answer[],
   maxPassingPoints?: number,
   minPassingPoints?: number
 ): Promise<void> => {

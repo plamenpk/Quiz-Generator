@@ -14,7 +14,7 @@ import {
 } from '../../services/quiz.services';
 import PublicQuizResolved from '../PublicQuizResolved/PublicQuizResolved';
 import { QUIZ_STATUS } from '../../common/constants';
-import { Quiz } from '../../common/interfaces';
+import { Question, Quiz } from '../../common/interfaces';
 import { Answer } from '../../common/interfaces';
 
 const SingleQuizView: React.FC = () => {
@@ -22,12 +22,12 @@ const SingleQuizView: React.FC = () => {
   const { id } = useParams();
   const { appState } = useContext(AuthContext);
   const [quiz, setQuiz] = useState<Quiz>();
-  const [userAnswers, setUserAnswers] = useState<Answer>([]);
+  const [userAnswers, setUserAnswers] = useState<Answer[]>([]);
   const [score, setScore] = useState(0);
   const [timerFinished, setTimerFinished] = useState(false);
   const [isQuizResolved, setIsQuizResolved] = useState(false);
   const activeQuestionIndex = userAnswers.length;
-  const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState<Question[]>([]);
   const [attempts, setAttempts] = useState(1);
 
   useEffect(() => {
@@ -47,15 +47,15 @@ const SingleQuizView: React.FC = () => {
   }, [id]);
 
   useEffect(() => {
-    if (appState?.userData?.score) {
-     
+    if (appState?.userData?.score && id) {
+
       setIsQuizResolved(Object.values(appState?.userData?.score).map(el => el.id).includes(id));
     }
   }, [id, appState?.userData?.score]);
 
   const quizIsComplete = activeQuestionIndex === quiz?.questions.length;
 
-  const handleSelectAnswer = (selectedAnswer) => {
+  const handleSelectAnswer = (selectedAnswer: Answer): void => {
     setUserAnswers((prevUserAnswers) => {
       return [...prevUserAnswers, selectedAnswer];
     });
@@ -71,7 +71,7 @@ const SingleQuizView: React.FC = () => {
   };
 
   useEffect(() => {
-  
+
     if (userAnswers[activeQuestionIndex - 1]?.isCorrect) {
       setScore((score) => score + 1);
     }
@@ -81,20 +81,24 @@ const SingleQuizView: React.FC = () => {
     setTimerFinished(true);
   };
 
-  if (isQuizResolved) {
+  if (isQuizResolved && id) {
+    const userScore = appState?.userData?.score;
 
-    if (quiz?.contestType === QUIZ_STATUS.INVITATIONAL) {
+    if (userScore && quiz?.contestType === QUIZ_STATUS.INVITATIONAL) {
+      const resolvedEntry = Object.values(userScore).find(el => el.id === id);
 
-      const resolvedOn = Object.values(appState?.userData?.score).find(el => el.id === id).resolvedOn;
-      const scorePoints = Object.values(appState?.userData?.score).find(el => el.id === id).score;
+      if (resolvedEntry) {
+        const resolvedOn = resolvedEntry.resolvedOn;
+        const scorePoints = resolvedEntry.score;
 
-      return <QuizResolved id={id} score={scorePoints} title={quiz?.title} category={quiz?.category} userAnswers={userAnswers} resolvedOn={resolvedOn} />;
+        return <QuizResolved id={id} score={scorePoints} title={quiz?.title} category={quiz?.category} userAnswers={userAnswers} resolvedOn={resolvedOn} />;
+      }
     }
   }
 
   if (quizIsComplete || timerFinished) {
 
-    const scorePoints = Math.ceil(score / quiz?.questions.length * quiz?.maxPassingPoints);
+    const scorePoints = Math.ceil(score / (quiz?.questions.length ?? 1) * (quiz?.maxPassingPoints ?? 1));
 
     if (appState?.user) {
       if (appState?.userData) {
@@ -136,7 +140,7 @@ const SingleQuizView: React.FC = () => {
       {quiz && <div className="flex flex-col overflow-auto mt-12 pt-2 items-center justify-center">
         <div className="text-center md:pb-2">
           <h1 className="text-5xl md:text-6xl font-extrabold leading-tighter tracking-tighter" data-aos="zoom-y-out">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-400">{quiz?.title}title</span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-400">{quiz?.title}</span>
           </h1>
         </div>
         <div className="flex xl:space-x-96 lg:space-x-28 sm:space-x-24">

@@ -5,54 +5,64 @@ import { onValue } from 'firebase/database';
 import toast from 'react-hot-toast';
 import { AuthContext } from '../../context/AuthContext';
 import { deleteQuiz } from '../../services/quiz.services';
+import { Answer, Quiz } from '../../common/interfaces';
 
 const EditQuiz: React.FC = () => {
-  const [quizzes, setQuizzes] = useState([]);
-  const [selectedQuiz, setSelectedQuiz] = useState(null);
-  const [selectedQuestion, setSelectedQuestion] = useState(null);
+  const [quizzes, setQuizzes] = useState<Quiz[]>([]);
+  const [selectedQuiz, setSelectedQuiz] = useState<Quiz>();
+  // const [selectedQuestion, setSelectedQuestion] = useState<Question>();
   const [editedTitle, setEditedTitle] = useState('');
-  const [editedAnswers, setEditedAnswers] = useState([]);
+  const [editedAnswers, setEditedAnswers] = useState<Answer[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const { appState } = useContext(AuthContext);
-  const username = appState?.userData?.username;
+  // const username = appState?.userData?.username;
 
   useEffect(() => {
     onValue(quizzesRef, (snapshot) => {
       const data = snapshot.val();
-      const filteredQuizzes = Object.values(data).filter(
-        (quiz) =>
+      const filteredQuizzes = (Object.values(data) as Quiz[]).filter(
+        (quiz: Quiz) =>
           quiz.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           quiz.createdBy.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setQuizzes(filteredQuizzes);
+      // console.log(quizzes);
     });
   }, [searchTerm]);
 
-  const handleEditQuiz = (quiz) => {
+  const handleEditQuiz = (quiz: Quiz): void => {
     setSelectedQuiz(quiz);
-    if (quiz.question && quiz.question.length > 0) {
-      const firstQuestion = quiz.question[0];
-      setSelectedQuestion(firstQuestion);
+    if (quiz.questions && quiz.questions.length > 0) {
+      const firstQuestion = quiz.questions[0];
+      // setSelectedQuestion(firstQuestion);
       setEditedAnswers(firstQuestion.answers);
     }
     setEditedTitle(quiz.title);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (id: string): void => {
     deleteQuiz(id);
   };
 
-  const handleAnswerChange = (questionIndex, index, event) => {
-    const newAnswers = { ...selectedQuiz };
-    newAnswers.questions[questionIndex].answers[index].text = event.target.value;
-    setEditedAnswers(newAnswers);
+  const handleAnswerChange = (questionIndex: number, index: number, event: React.ChangeEvent<HTMLInputElement>): void => {
+    if (selectedQuiz) {
+      const newAnswers = { ...selectedQuiz };
+      if (newAnswers.questions && newAnswers.questions[questionIndex]) {
+        newAnswers.questions[questionIndex].answers[index].text = event.target.value;
+        setEditedAnswers(newAnswers);
+      }
+    }
   };
 
-  const handleSaveQuestion = () => {
-    updateQuiz(selectedQuiz.id, editedAnswers)
-      .then(() => toast.success('Quiz updated successfully'))
-      .catch((e) => console.log(e));
-  };
+  const handleSaveQuestion = (): void => {
+    if (selectedQuiz) {
+        updateQuiz(selectedQuiz.id, editedAnswers)
+            .then(() => toast.success('Quiz updated successfully'))
+            .catch((e) => console.log(e));
+    } else {
+        console.error('Selected quiz is undefined');
+    }
+};
   // console.log(appState?.userData?.username)
   return (
     <div className="pb-20 overflow-auto ">

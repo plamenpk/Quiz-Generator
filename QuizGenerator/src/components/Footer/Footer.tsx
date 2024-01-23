@@ -6,9 +6,9 @@ const Footer: React.FC = () => {
       <footer className="relative bottom-0 left-0 z-10 w-full p-4  dark:bg-gradient-to-r dark:from-zinc-500 shadow md:flex md:items-center md:justify-between md:p-2">
         <span className="text-md  text-black sm:text-center dark:text-zinc-200">
           Copyright © 2024 by {' '}
-          <a href="http://localhost:5173/" className="hover:underline">
+          <Link to="http://localhost:5173/" className="hover:underline">
             QuizGenerator™
-          </a>
+          </Link>
           . All Rights Reserved.
         </span>
         <ul className="flex flex-wrap items-center mt-3 text-md font-medium text-white dark:text-zinc-200 sm:mt-0">
