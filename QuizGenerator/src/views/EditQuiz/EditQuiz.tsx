@@ -66,7 +66,7 @@ const EditQuiz: React.FC = () => {
   };
 
   return (
-    <div className="">
+    <>
       <div className="mt-10 mb-16 py-8 px-2 bg-gray-100 flex items-center justify-center opacity-90">
         <div className="container max-w-screen-lg mx-auto my-3">
           <div className="bg-white rounded shadow-lg p-4 md:p-8">
@@ -155,7 +155,7 @@ const EditQuiz: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

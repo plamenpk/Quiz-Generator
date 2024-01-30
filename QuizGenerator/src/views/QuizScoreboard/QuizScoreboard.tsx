@@ -22,36 +22,34 @@ const QuizScoreboard: React.FC = () => {
   }, [id]);
 
   return (
-    <div className="pb-20 overflow-auto">
-      <div className="flex flex-col items-center">
-        <p className="pt-12 text-3xl font-extrabold bg-clip-text p-1 text-transparent bg-gradient-to-r from-zinc-700 to-gray-500 dark:bg-gradient-to-r dark:from-zinc-300 dark:to-gray-500">
-          Welcome to the quiz scoreboard.
-        </p>
-      </div>
+    <div className="mt-10 mb-16 py-8 px-2 bg-gray-100 flex items-center justify-center opacity-90">
+      <div className="container max-w-screen-lg mx-auto my-3">
+        <div className="bg-white rounded shadow-lg p-4 md:p-8">
+          <h1 className="mb-5 text-3xl dark:text-zinc-200">Quiz scoreboard</h1>
 
-      <div className="flex flex-col p-5 ml-10 mr-10 mt-20 border shadow-md rounded bg-gradient-to-br from-indigo-500 dark:bg-gradient-to-br dark:from-zinc-600">
-        <div className="mt-4 ">
-          <table className="table-auto rounded w-full text-center text-white dark:text-zinc-100">
-            <thead className=" text-lg border dark:bg-gradient-to-br dark:from-zinc-600">
+
+          <table className="min-w-full text-left font-light">
+            <thead className="border-b dark:border-neutral-500">
               <tr>
-                <th className=" px-4 py-2">User</th>
-                <th className=" px-4 py-2">Quiz Title</th>
-                <th className=" px-4 py-2">Score</th>
-                <th className=" px-4 py-2">Max score</th>
-                <th className=" px-4 py-2">View Answers</th>
+                <th scope="col" className="px-6 py-2">User</th>
+                <th scope="col" className="px-6 py-2">Quiz Title</th>
+                <th scope="col" className="px-6 py-2">Score</th>
+                <th scope="col" className="px-6 py-2">Max score</th>
+                <th scope="col" className="px-6 py-2">View Answers</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="text-lg text-black">
               {quiz?.scoreBoard && Object.values(Object.values(quiz?.scoreBoard))
                 .sort((a, b) => b.score - a.score)
                 .map((user) => (
-                  <tr key={user.username} className="border dark:bg-gradient-to-br dark:from-zinc-800">
-                    <td className=" px-4 py-2">{user.username}</td>
-                    <td className=" px-4 py-2">{quiz.title}</td>
-                    <td className=" px-4 py-2">{user.score}</td>
-                    <td className=" px-4 py-2">100</td>
-                    <td className=" px-4 py-2">
-                      <Link to={`/user-answers/${quiz?.id}--${user.username}`}>
+                  <tr key={user.username} className="border-b dark:border-neutral-500 hover:bg-sky-50">
+                    <td className="whitespace-nowrap px-6 py-2 font-light">{user.username}</td>
+                    <td className="whitespace-nowrap px-6 py-2 font-light">{quiz.title}</td>
+                    <td className="whitespace-nowrap px-6 py-2 font-light">{user.score}</td>
+                    <td className="whitespace-nowrap px-6 py-2 font-light">100</td>
+                    <td className="whitespace-nowrap px-6 py-2 font-light">
+                      <Link to={`/user-answers/${quiz?.id}--${user.username}`}
+                        className="rounded-sm px-3 py-2 bg-blue-500 hover:bg-blue-700 text-base text-white dark:text-zinc-200 shadow-sm  dark:hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 hover:scale-105">
                         View User Answers
                       </Link>
                     </td>
