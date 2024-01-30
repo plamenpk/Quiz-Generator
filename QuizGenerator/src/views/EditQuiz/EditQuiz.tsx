@@ -5,14 +5,14 @@ import { onValue } from 'firebase/database';
 import toast from 'react-hot-toast';
 import { AuthContext } from '../../context/AuthContext';
 import { deleteQuiz } from '../../services/quiz.services';
-import { Answer, Quiz } from '../../common/interfaces';
+import { Quiz } from '../../common/interfaces';
 
 const EditQuiz: React.FC = () => {
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [selectedQuiz, setSelectedQuiz] = useState<Quiz>();
   // const [selectedQuestion, setSelectedQuestion] = useState<Question>();
   const [editedTitle, setEditedTitle] = useState('');
-  const [editedAnswers, setEditedAnswers] = useState<Answer[]>([]);
+  const [editedAnswers, setEditedAnswers] = useState<Quiz>();
   const [searchTerm, setSearchTerm] = useState('');
   const { appState } = useContext(AuthContext);
   // const username = appState?.userData?.username;
@@ -20,22 +20,23 @@ const EditQuiz: React.FC = () => {
   useEffect(() => {
     onValue(quizzesRef, (snapshot) => {
       const data = snapshot.val();
-      const filteredQuizzes = (Object.values(data) as Quiz[]).filter(
-        (quiz: Quiz) =>
-          quiz.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          quiz.createdBy.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      const filteredQuizzes = (Object.values(data) as Quiz[])
+        .filter(
+          (quiz: Quiz) =>
+            quiz.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            quiz.createdBy.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
       setQuizzes(filteredQuizzes);
-      // console.log(quizzes);
     });
   }, [searchTerm]);
 
   const handleEditQuiz = (quiz: Quiz): void => {
     setSelectedQuiz(quiz);
     if (quiz.questions && quiz.questions.length > 0) {
-      const firstQuestion = quiz.questions[0];
+      // const firstQuestion = quiz.questions[0];
       // setSelectedQuestion(firstQuestion);
-      setEditedAnswers(firstQuestion.answers);
+      // setEditedAnswers(firstQuestion.answers);
     }
     setEditedTitle(quiz.title);
   };
@@ -55,15 +56,15 @@ const EditQuiz: React.FC = () => {
   };
 
   const handleSaveQuestion = (): void => {
-    if (selectedQuiz) {
+    if (selectedQuiz && editedAnswers) {
       updateQuiz(selectedQuiz.id, editedAnswers)
         .then(() => toast.success('Quiz updated successfully'))
-        .catch((e) => console.log(e));
+        .catch((e) => console.error(e));
     } else {
       console.error('Selected quiz is undefined');
     }
   };
-  // console.log(appState?.userData?.username)
+
   return (
     <div className="">
       <div className="mt-10 mb-16 py-8 px-2 bg-gray-100 flex items-center justify-center opacity-90">
@@ -117,47 +118,43 @@ const EditQuiz: React.FC = () => {
                 ))}
               </tbody>
             </table>
+            {selectedQuiz && selectedQuiz.questions && (
+              <div className="mt-10">
+                <h1 className="text-2xl"> Title: {editedTitle}</h1>
+                {selectedQuiz.questions.map((question, questionIndex) => (
+                  <div key={questionIndex} className="my-2">
+
+                    <span className="font-bold text-xl">
+                      Question: {question.question}
+                    </span>
+
+                    <div className="text-black">
+                      {question.answers.map((answer, index) => (
+                        <input
+                          key={index}
+                          className="h-10 border mt-1 rounded px-4 w-full bg-gray-50 hover:bg-sky-50"
+                          type="text"
+                          value={answer.text}
+                          onChange={(event) =>
+                            handleAnswerChange(questionIndex, index, event)
+                          }
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+                <button
+                  role="alert"
+                  className="rounded-sm px-3 py-2 bg-blue-500 hover:bg-blue-700 text-base text-white dark:text-zinc-200 shadow-sm  dark:hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 hover:scale-105"
+                  onClick={handleSaveQuestion}
+                >
+                  Save changes
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
-
-        {selectedQuiz && selectedQuiz.questions && (
-          <div className="border-2 rounded mt-5 p-5 shadow-md table-auto w-full bg-gradient-to-br from-indigo-400 text-white dark:bg-gradient-to-br dark:from-zinc-800 dark:text-zinc-200">
-            <h1 className=" text-3xl mb-6 font-bold text-white dark:text-zinc-200">Edit Quiz</h1>
-            <h1 className="font-bold text-2xl"> Title: {editedTitle}</h1>
-
-            {selectedQuiz.questions.map((question, questionIndex) => (
-              <div key={questionIndex} className="my-2">
-
-                <span className="font-bold text-xl">
-                  Question: {question.question}
-                </span>
-
-                <div className="text-black">
-                  {question.answers.map((answer, index) => (
-                    <input
-                      key={index}
-                      className="border-2 rounded p-2 w-full mt-2 dark:bg-zinc-400"
-                      type="text"
-                      value={answer.text}
-                      onChange={(event) =>
-                        handleAnswerChange(questionIndex, index, event)
-                      }
-                    />
-                  ))}
-                </div>
-              </div>
-            ))}
-            <button
-              role="alert"
-              className="alert alert-success ml-2 bg-green-600 dark:bg-indigo-600 dark:text-zinc-100 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2 transform transition duration-500 ease-in-out hover:scale-90"
-              onClick={handleSaveQuestion}
-            >
-              Save changes
-            </button>
-          </div>
-        )}
-      
     </div>
   );
 };

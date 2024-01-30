@@ -17,7 +17,7 @@ const RemainingTime: React.FC<RemainingTimeTypes> = ({ timeLimit, username, id, 
 
   useEffect(() => {
     if (seconds <= 0) {
-      updateUserScore(username, id, title, score, category, [])
+      updateUserScore(username, id, title, score, category, [], 0, 0)
         .then(() => console.log('Quiz result saved successfully'))
         .catch((e: Error) => toast.error(e.message));
 
