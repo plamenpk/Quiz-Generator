@@ -81,15 +81,6 @@ const Students: React.FC = () => {
               </h1>
               <p className="pt-8 text-3xl font-semibold bg-clip-text p-1 text-transparent bg-gradient-to-r from-zinc-700 to-gray-500 dark:bg-gradient-to-r dark:from-zinc-300 dark:to-gray-500">
                 Welcome to the students’ page.
-                <p className="mt-2">
-                  Here, on this table, you will see all the students.
-                </p>
-                <p className=" mt-2">
-                  In the search field, you can look for a specific student.
-                </p>
-                <p className=" mt-2">
-                  Enjoy the convenience and efficiency of our system!
-                </p>
               </p>
             </div>
 
